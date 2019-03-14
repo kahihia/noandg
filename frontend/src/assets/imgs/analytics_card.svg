@@ -1,0 +1,17 @@
+<svg width="90" height="90" viewBox="0 0 90 90" xmlns="http://www.w3.org/2000/svg"
+     xmlns:xlink="http://www.w3.org/1999/xlink">
+  <title>ic-90x90-payments</title>
+  <defs>
+    <circle id="a" cx="45" cy="45" r="45"/>
+    <mask id="b" x="0" y="0" width="90" height="90" fill="#fff">
+      <use xlink:href="#a"/>
+    </mask>
+  </defs>
+  <g fill="transparent" fill-rule="evenodd">
+    <use stroke="transparent" mask="url(#b)" stroke-width="8" xlink:href="#a"/>
+    <path
+      d="M35.55 65h3.624v-4.147c6.792-.6 9.826-4.747 9.826-9.447 0-6.176-5.117-7.973-9.826-9.217v-7.972c2.218.46 4.392 1.52 6.113 3.271l2.988-4.009c-2.354-2.304-5.433-3.779-9.101-4.193V25H35.55v4.24c-5.842.507-9.555 4.24-9.555 8.94 0 5.99 4.89 7.696 9.555 8.894v8.94c-3.26-.507-5.887-2.258-7.562-4.148L25 56.06c2.4 2.534 5.887 4.424 10.55 4.793V65zm8.016-13.088c0 1.798-1.268 3.687-4.392 4.148V48.04c2.49.784 4.392 1.798 4.392 3.871zM31.43 37.765c0-2.028 1.585-3.456 4.12-3.779v7.235c-2.4-.737-4.12-1.659-4.12-3.456z"
+      fill="#FFF"/>
+    <path d="M53 33h12v4H53v-4zm0 10h12v4H53v-4zm0 10h12v4H53v-4z" fill="#FFF"/>
+  </g>
+</svg>
