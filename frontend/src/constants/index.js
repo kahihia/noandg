@@ -12,6 +12,7 @@ const CREATE_USER_GROUPS_URL = DOMAIN + 'users/create/group/'
 const USER_PERMISSIONS_URL = DOMAIN + 'users/permissions/'
 const USER_PLANS_URL = DOMAIN + 'users/plans/'
 const USER_PROFILE_URL = DOMAIN + 'users/profiles/'
+const USERS_FORM_URL = DOMAIN + 'users/forms/users/'
 
 // Eng
 const PROJECTS_DIRECTORY = DOMAIN + 'engineering/projects/'
@@ -19,6 +20,8 @@ const CREATE_PROJECT = DOMAIN + 'engineering/create/project/'
 const PROJECT_LEADS = DOMAIN + 'engineering/forms/leads/'
 const FILES_DIRECTORY = DOMAIN + 'engineering/files/'
 const CREATE_FILE = DOMAIN + 'engineering/create/file/'
+const DESIGNS_DIRECTORY = DOMAIN + 'engineering/designs/'
+const CREATE_DESIGN = DOMAIN + 'engineering/create/design/'
 const EQUIPMENT_DIRECTORY = DOMAIN + 'engineering/equipments/'
 const CREATE_EQUIPMENT = DOMAIN + 'engineering/create/equipment/'
 const BUDGET_DIRECTORY = DOMAIN + 'engineering/budgets/'
@@ -49,6 +52,7 @@ export default {
   USER_PERMISSIONS_URL,
   USER_PLANS_URL,
   USER_PROFILE_URL,
+  USERS_FORM_URL,
   PROJECTS_DIRECTORY,
   CREATE_PROJECT,
   PROJECT_LEADS,
@@ -64,5 +68,7 @@ export default {
   CREATE_QUOTE,
   PROJECT_EQUIPMENTS,
   QUOTE_ITEM_DIRECTORY,
-  CREATE_QUOTE_ITEM
+  CREATE_QUOTE_ITEM,
+  DESIGNS_DIRECTORY,
+  CREATE_DESIGN
 }

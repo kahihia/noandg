@@ -4,9 +4,14 @@
         <h1>
           <span class="text">Project</span>
         </h1>
-        <router-link v-if="this.checkPermissions.validatePermission(this.allPermissions.view_project, this.$store.getters.getPermissions)" :to="{name: 'project_overview', params: {'slug': slug}}" class="top-menu-links" activeClass="active">
+        <router-link v-if="this.checkPermissions.validatePermission(this.allPermissions.view_project, this.$store.getters.getPermissions)" :to="{name: 'project_team', params: {'slug': slug}}" class="top-menu-links" activeClass="active">
           <div class="-text">
             <div class="-text-one">Overview</div>
+          </div>
+        </router-link>
+        <router-link v-if="this.checkPermissions.validatePermission(this.allPermissions.view_project, this.$store.getters.getPermissions)" :to="{name: 'project_team', params: {'slug': slug}}" class="top-menu-links" activeClass="active">
+          <div class="-text">
+            <div class="-text-one">Team</div>
           </div>
         </router-link>
         <router-link v-if="this.checkPermissions.validatePermission(this.allPermissions.view_projectfile, this.$store.getters.getPermissions)" :to="{name: 'project_files', params: {'slug': slug}}" class="top-menu-links" activeClass="active">
@@ -14,17 +19,22 @@
             <div class="-text-one">Files</div>
           </div>
         </router-link>
-        <router-link v-if="this.checkPermissions.validatePermission(this.allPermissions.view_projectequipment, this.$store.getters.getPermissions)" :to="{name: 'project_budget', params: {'slug': slug}}" class="top-menu-links" activeClass="active">
+        <router-link v-if="this.checkPermissions.validatePermission(this.allPermissions.view_project, this.$store.getters.getPermissions)" :to="{name: 'project_designs', params: {'slug': slug}}" class="top-menu-links" activeClass="active">
           <div class="-text">
-            <div class="-text-one">Budget</div>
+            <div class="-text-one">Designs</div>
           </div>
         </router-link>
-        <router-link v-if="this.checkPermissions.validatePermission(this.allPermissions.view_projectbudget, this.$store.getters.getPermissions)" :to="{name: 'project_bidding', params: {'slug': slug}}" class="top-menu-links" activeClass="active">
+        <router-link v-if="this.checkPermissions.validatePermission(this.allPermissions.view_projectequipment, this.$store.getters.getPermissions)" :to="{name: 'project_budget', params: {'slug': slug}}" class="top-menu-links" activeClass="active">
+          <div class="-text">
+            <div class="-text-one">Budget & Equipments</div>
+          </div>
+        </router-link>
+        <router-link v-if="this.checkPermissions.validatePermission(this.allPermissions.view_projectbid, this.$store.getters.getPermissions)" :to="{name: 'project_bidding', params: {'slug': slug}}" class="top-menu-links" activeClass="active">
           <div class="-text">
             <div class="-text-one">Bidding</div>
           </div>
         </router-link>
-        <router-link v-if="this.checkPermissions.validatePermission(this.allPermissions.view_projectquote, this.$store.getters.getPermissions)" :to="{name: 'project_quotation', params: {'slug': slug}}" class="top-menu-links" activeClass="active">
+        <router-link v-if="this.checkPermissions.validatePermission(this.allPermissions.view_projectquoteitem, this.$store.getters.getPermissions)" :to="{name: 'project_quotation', params: {'slug': slug}}" class="top-menu-links" activeClass="active">
           <div class="-text">
             <div class="-text-one">Quotation</div>
           </div>

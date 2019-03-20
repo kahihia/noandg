@@ -7,11 +7,12 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from apps.engineering.models import Project, ProjectFile, ProjectEquipment, ProjectBudget, ProjectBid, ProjectQuote, \
-    ProjectQuoteItem
+    ProjectQuoteItem, ProjectDesign
 from apps.engineering.serializers import CreateProjectSerializer, ProjectSerializer, CreateProjectFileSerializer, \
     ProjectFileSerializer, CreateProjectEquipmentSerializer, ProjectEquipmentSerializer, CreateProjectBudgetSerializer, \
     ProjectBudgetSerializer, ProjectBidSerializer, CreateProjectBidSerializer, CreateProjectQuoteSerializer, \
-    ProjectQuoteSerializer, CreateProjectQuoteItemSerializer, ProjectQuoteItemSerializer
+    ProjectQuoteSerializer, CreateProjectQuoteItemSerializer, ProjectQuoteItemSerializer, ProjectDesignSerializer, \
+    CreateProjectDesignSerializer
 
 
 class CreateProjectViewSet(viewsets.ModelViewSet):
@@ -61,6 +62,30 @@ class CreateProjectFileViewSet(viewsets.ModelViewSet):
 class ProjectFileViewSet(viewsets.ModelViewSet):
     queryset = ProjectFile.objects.all()
     serializer_class = ProjectFileSerializer
+    permission_classes = (IsAuthenticated, DjangoModelPermissions,)
+    lookup_field = 'slug'
+
+    def get_queryset(self):
+        project = get_object_or_404(Project, id=self.request.GET.get('project'))
+        self.queryset = self.queryset.filter(project=project)
+
+        if self.request.GET.get('q'):
+            return self.queryset.filter(
+                Q(name__icontains=self.request.GET.get('q')))
+        else:
+            return self.queryset
+
+
+class CreateProjectDesignViewSet(viewsets.ModelViewSet):
+    queryset = ProjectDesign.objects.all()
+    serializer_class = CreateProjectDesignSerializer
+    permission_classes = (IsAuthenticated, DjangoModelPermissions,)
+    lookup_field = 'slug'
+
+
+class ProjectDesignViewSet(viewsets.ModelViewSet):
+    queryset = ProjectDesign.objects.all()
+    serializer_class = ProjectDesignSerializer
     permission_classes = (IsAuthenticated, DjangoModelPermissions,)
     lookup_field = 'slug'
 

@@ -1,15 +1,14 @@
 <template>
     <div>
-      <div class="page-header page-header-inner">
-        <div class="page-header-left">
-          <h1>
-            <div class="text">Quotation</div>
-          </h1>
-        </div>
-         <div class="page-header-right">
+      <div class="bottom-header">
+        <h1>
+          <span class="text">Quotation</span>
+        </h1>
+
+         <div class="left-links">
             <div class="buttons">
               <div v-if="this.checkPermissions.validatePermission(this.allPermissions.change_project, this.$store.getters.getPermissions)" class="button-group">
-                <button class="btn-blue" @click="projectQuotationModal= true">Request for quotation</button>
+                <button class="btn green" @click="projectQuotationModal= true">Request for quotation</button>
                 <Modal
                   v-model="projectQuotationModal"
                   ok-text="Send request"
@@ -20,7 +19,7 @@
                 </Modal>
               </div>
               <div class="button-group">
-                <button class="btn-gray" @click.prevent="fetchProject">Refresh</button>
+                <button class="btn gray" @click.prevent="fetchProject">Refresh</button>
               </div>
             </div>
          </div>
@@ -35,22 +34,50 @@
         </span>
       </div>
 
-      <div class="content-data">
-        <div class="items-search" v-if="this.checkPermissions.validatePermission(this.allPermissions.add_projectquote, this.$store.getters.getPermissions)">
-          <div class="w30">
-            <Select v-model="selectedEquipment" @on-change="fetchQuoteItems()" label="Select specific equipment">
-              <Option v-for="item in equipments" :value="item.value" :key="item.value">{{ item.label }}</Option>
-            </Select>
+      <div class="content-data" v-if="this.checkPermissions.validatePermission(this.allPermissions.add_projectquote, this.$store.getters.getPermissions)">
+        <div class="pad-15">
+          <div class="select-item">
+            <div class="w30">
+              <Select v-model="selectedEquipment" @on-change="fetchQuoteItems()" label="Select specific equipment">
+                <Option v-for="item in equipments" :value="item.value" :key="item.value">{{ item.label }}</Option>
+              </Select>
+            </div>
           </div>
         </div>
+        <Table :columns="columns" :data="quoteitems" :loading="pageData.loading"></Table>
+        <Page v-if="!pageData.loading && pageData.totalPages > 1" :total="pageData.totalRecords" :current="pageData.currentPage" @on-change="paginateAction" />
+        <!-- modals -->
+        <Modal
+          v-model="acceptQuoteModal"
+          ok-text="Accept quote"
+          @on-ok="updateQuoteStatus(selectedQuoteItem, 'Accepted')"
+          width="400"
+          title="Accept vendor quote">
+          <p>Are you sure you accept this vendor's quote?</p>
+        </Modal>
+        <Modal
+          class="delete-group"
+          v-model="denyBidModal"
+          ok-text="Deny bid"
+          @on-ok="updateQuoteStatus(selectedBid.slug, 'Denied')"
+          width="400"
+          title="Deny vendor bid">
+          <p>When you deny this bid, this vendor will not be able to bid on this project again or send a quote once a request for quotation is made.</p>
+        </Modal>
+      </div>
 
-        <div class="content-row" v-if="this.checkPermissions.validatePermission(this.allPermissions.add_projectquoteitem, this.$store.getters.getPermissions)">
-          <div class="content-are-one">
-            <div v-if="quotesPageData.totalRecords > 0">
-              <legend>Check quote status</legend>
-              <Alert show-icon>
-                Project is open for you to submit your quotes. You can quote on the table below.
-              </Alert>
+      <div class="m-b-20 m-l-20">
+        <Row :gutter="8" v-if="this.checkPermissions.validatePermission(this.allPermissions.add_projectquoteitem, this.$store.getters.getPermissions)">
+          <i-col class="content-are-one" span="16">
+            <div class="content-data" v-if="quotesPageData.totalRecords > 0">
+
+              <div class="pad-15">
+                <Alert show-icon>
+                  Project is open for you to submit your quotes. You can quote on the table below.
+                </Alert>
+                <legend>Check quote status</legend>
+              </div>
+
               <Table :columns="quoteColumns" :data="vendorQuotes" :loading="pageData.loading"></Table>
               <Modal
                 v-model="newQuoteModal"
@@ -152,43 +179,22 @@
                 </div>
               </Modal>
             </div>
-          </div>
-          <div v-if="bidExists || !bidExists && this.projectData.bidding" class="content-area-two">
-            <div class="content-info">
-              <div class="content-info-card">
-                <h4>What you need to know</h4>
-                <ul>
-                  <li>You can submit quote per equipment</li>
-                  <li>Click on <strong>Equipment name</strong> to view more details about a given equipment.</li>
-                  <li>Once a quote on a given equipment is accepted, the status will be updated on the list table.</li>
-                </ul>
+          </i-col>
+          <i-col span="8" v-if="bidExists || !bidExists && this.projectData.bidding" class="content-area-two">
+            <div class="content-data">
+              <div class="content-info">
+                <div class="content-info-card">
+                  <h4>What you need to know</h4>
+                  <ul>
+                    <li>You can submit quote per equipment</li>
+                    <li>Click on <strong>Equipment name</strong> to view more details about a given equipment.</li>
+                    <li>Once a quote on a given equipment is accepted, the status will be updated on the list table.</li>
+                  </ul>
+                </div>
               </div>
             </div>
-          </div>
-        </div>
-
-        <div v-if="this.checkPermissions.validatePermission(this.allPermissions.change_projectquote, this.$store.getters.getPermissions)">
-          <Table :columns="columns" :data="quoteitems" :loading="pageData.loading"></Table>
-          <Page v-if="!pageData.loading && pageData.totalPages > 1" :total="pageData.totalRecords" :current="pageData.currentPage" @on-change="paginateAction" />
-          <!-- modals -->
-          <Modal
-            v-model="acceptQuoteModal"
-            ok-text="Accept quote"
-            @on-ok="updateQuoteStatus(selectedQuoteItem, 'Accepted')"
-            width="400"
-            title="Accept vendor quote">
-            <p>Are you sure you accept this vendor's quote?</p>
-          </Modal>
-          <Modal
-            class="delete-group"
-            v-model="denyBidModal"
-            ok-text="Deny bid"
-            @on-ok="updateQuoteStatus(selectedBid.slug, 'Denied')"
-            width="400"
-            title="Deny vendor bid">
-            <p>When you deny this bid, this vendor will not be able to bid on this project again or send a quote once a request for quotation is made.</p>
-          </Modal>
-        </div>
+          </i-col>
+        </Row>
       </div>
     </div>
 </template>

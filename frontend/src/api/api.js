@@ -26,6 +26,9 @@ export default {
   userGroupsForm () {
     return ajax(constants.FORM_USER_GROUPS_URL, 'get')
   },
+  usersForm () {
+    return ajax(constants.USERS_FORM_URL, 'get')
+  },
   createGroup (method, params, data) {
     if (data !== null) {
       return ajax(constants.CREATE_USER_GROUPS_URL, method, {data})
@@ -50,6 +53,9 @@ export default {
     } else {
       return ajax(constants.PROJECTS_DIRECTORY, method)
     }
+  },
+  projectEdit (slug, method, params, data) {
+    return ajax(constants.CREATE_PROJECT + slug + '/', method)
   },
   projectView (slug, method, params, data) {
     if (params !== null) {
@@ -79,6 +85,15 @@ export default {
       return ajax(constants.CREATE_FILE, method, {data}, headers)
     } else {
       return ajax(constants.FILES_DIRECTORY, method)
+    }
+  },
+  viewDesigns (method, params, data, headers) {
+    if (params !== null) {
+      return ajax(constants.DESIGNS_DIRECTORY, method, {params})
+    } else if (data !== null) {
+      return ajax(constants.CREATE_DESIGN, method, {data}, headers)
+    } else {
+      return ajax(constants.DESIGNS_DIRECTORY, method)
     }
   },
   viewEquipments (method, params, data) {

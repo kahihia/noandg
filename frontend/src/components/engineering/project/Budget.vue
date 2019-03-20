@@ -2,7 +2,7 @@
     <div>
       <div class="bottom-header">
         <h1>
-          <span class="text">Budget</span>
+          <span class="text">Budget & Equipments</span>
         </h1>
 
         <div class="left-links">

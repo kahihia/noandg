@@ -93,7 +93,7 @@ Left nav
   line-height: normal;
   background-color: transparent;
   height: 32px;
-  background-image: url("../imgs/logo.png");
+  background-image: url("../imgs/logo.svg");
   box-sizing: content-box;
   background-size: 75px 23px;
   flex: 0 0 auto;
@@ -483,6 +483,17 @@ Right pane
   background: #47be00 !important;
 }
 
+.btn.red, .delete-group .ivu-btn-primary {
+  color: #fff;
+  background: #ed4014 !important;
+  border: 0;
+  box-shadow: inset 0 -2px 0 #ed4014 !important;
+}
+
+.btn.red:hover, .btn.red:focus, .delete-group .ivu-btn-primary:focus, .delete-group .ivu-btn-primary:hover {
+  background: #ed4014 !important;
+}
+
 .btn.gray, .ivu-btn-text {
   color: #595959;
   background: #e6e6e6 !important;
@@ -537,9 +548,48 @@ Right pane
   display: flex;
 }
 
+.content-row {
+  padding: 15px 0;
+}
+
+.pad-15 {
+  padding: 15px;
+}
+
+.content-data.ivu-col {
+  display: block;
+  margin: 0 !important;
+}
+
+.content-info {
+  padding: 15px;
+}
+
+.content-info-card h4, legend {
+  font-size: 16px;
+  font-weight: 400;
+  margin-bottom: 20px;
+}
+
+.content-info-card ul {
+  padding-left: 15px;
+}
+
+.content-info-card ul li {
+  padding-bottom: 10px;
+}
+
+.m-b-20 {
+  margin-bottom: 20px;
+}
+
 /*
 Forms
  */
+.select-item {
+  width: 25%;
+}
+
 label {
   display: block;
   margin-top: 15px;
@@ -686,4 +736,22 @@ tr.ivu-table-row-hover td {
 .ivu-tabs-bar {
   border-bottom: none;
   box-shadow: rgb(232, 232, 232) 0px -1px 0px 0px inset;
+}
+
+.ivu-table::before, .ivu-table::after {
+  display: none !important;
+}
+
+.m-l-20 .ivu-row {
+  margin-right: 0 !important;
+  margin-left: 0 !important;
+}
+
+.m-l-20 .ivu-col {
+  padding-right: 0 !important;
+  padding-left: 0 !important;
+}
+
+table {
+  width: 100% !important;
 }

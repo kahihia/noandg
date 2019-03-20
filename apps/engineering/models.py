@@ -1,7 +1,7 @@
 from django.contrib.auth.models import User
 from django.db import models
 
-from configs import random_code, BID_STATUS, QUOTE_STATUS
+from configs import random_code, BID_STATUS, QUOTE_STATUS, DESIGN_TYPE
 
 
 class Project(models.Model):
@@ -11,6 +11,7 @@ class Project(models.Model):
     owner_name = models.CharField(max_length=255)
     owner_email = models.EmailField(max_length=55)
     bidding = models.BooleanField(default=False, blank=True)
+    members = models.ManyToManyField(User, related_name='project_member', blank=True)
     slug = models.SlugField(null=True, db_index=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -32,6 +33,28 @@ class ProjectFile(models.Model):
     name = models.TextField()
     description = models.TextField()
     document = models.FileField(upload_to='documents')
+    slug = models.SlugField(null=True, db_index=True, blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        ordering = ['name']
+
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            self.slug = random_code()
+        super().save(*args, **kwargs)
+
+    def __str__(self):
+        return self.name
+
+
+class ProjectDesign(models.Model):
+    project = models.ForeignKey(Project, on_delete=models.CASCADE)
+    name = models.TextField()
+    description = models.TextField()
+    document = models.FileField(upload_to='designs')
+    design_type = models.CharField(max_length=68, choices=DESIGN_TYPE, blank=False, default='FEED')
     slug = models.SlugField(null=True, db_index=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)

@@ -18,6 +18,8 @@ router.register(r'quotes', views.ProjectQuoteViewSet)
 router.register(r'create/quote', views.CreateProjectQuoteViewSet)
 router.register(r'quoteitems', views.ProjectQuoteItemViewSet)
 router.register(r'create/quoteitem', views.CreateProjectQuoteItemViewSet)
+router.register(r'designs', views.ProjectDesignViewSet)
+router.register(r'create/design', views.CreateProjectDesignViewSet)
 
 urlpatterns = [
     path('api/v1/engineering/forms/leads/', views.ProjectLeadsViewSet.as_view()),

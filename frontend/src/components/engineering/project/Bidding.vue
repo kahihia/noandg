@@ -1,15 +1,13 @@
 <template>
     <div>
-      <div class="page-header page-header-inner">
-        <div class="page-header-left">
-          <h1>
-            <div class="text">Bidding</div>
-          </h1>
-        </div>
-         <div class="page-header-right">
+      <div class="bottom-header">
+        <h1>
+          <span class="text">Bidding</span>
+        </h1>
+        <div class="left-links">
             <div class="buttons">
               <div v-if="this.checkPermissions.validatePermission(this.allPermissions.change_project, this.$store.getters.getPermissions)" class="button-group">
-                <button :class="projectData.bidding ? 'btn-delete':'btn-blue'" @click="projectBiddingModal= true">{{buttonText}}</button>
+                <button class="btn" :class="projectData.bidding ? 'red':'green'" @click="projectBiddingModal= true">{{buttonText}}</button>
                 <Modal
                   :class="projectData.bidding ? 'delete-group':''"
                   v-model="projectBiddingModal"
@@ -21,7 +19,7 @@
                 </Modal>
               </div>
               <div class="button-group">
-                <button class="btn-gray" @click.prevent="fetchProject">Refresh</button>
+                <button class="btn gray" @click.prevent="fetchProject">Refresh</button>
               </div>
             </div>
          </div>
@@ -39,50 +37,58 @@
         </span>
       </div>
 
-      <div class="content-data">
-        <div class="content-row" v-if="this.checkPermissions.validatePermission(this.allPermissions.add_projectbid, this.$store.getters.getPermissions)">
-          <div class="content-are-one">
-            <div v-if="!bidExists && this.projectData.bidding">
-              <legend>Submit your bid</legend>
-              <p>You can submit your bid by clicking on the <strong>Submit bid</strong> button bellow. You'll be requested to submit a quotation if your bid is accepted.</p>
-              <br/>
-              <button class="btn-blue" @click="newBidModal= true">Submit bid</button>
-              <Modal
-                v-model="newBidModal"
-                ok-text="Submit bid"
-                @on-ok="saveBid"
-                width="400"
-                title="Submit your project bid">
-                <p>You are about to submit your bid on this project.</p>
-            </Modal>
-            </div>
-            <div v-if="bidExists">
-              <legend>Check bid status</legend>
-              <Alert v-if="bidExists && currentBid[0].bid_status === 'Open'" show-icon>
-                You have already submitted your bid on this project. You can check the status of your bid below.
-              </Alert>
-              <Alert type="success" v-if="bidExists && currentBid[0].bid_status === 'Accepted'" show-icon>
-                Your bid was accepted. Check on <strong>quotation</strong> page to submit your quote.
-              </Alert>
-              <Alert type="warning" v-if="bidExists && currentBid[0].bid_status === 'Denied'" show-icon>
-                Your bid was denied. Your cannot bid again or submit any quotes on this project.
-              </Alert>
-              <Table :columns="currentBidColumns" :data="currentBid"></Table>
-            </div>
-          </div>
-          <div v-if="bidExists || !bidExists && this.projectData.bidding" class="content-area-two">
-            <div class="content-info">
-              <div class="content-info-card">
-                <h4>What you need to know</h4>
-                <ul>
-                  <li>You can only bid once on this project</li>
-                  <li>Bidding won't be enabled even if your current bid was denied.</li>
-                </ul>
+      <div class="m-l-20">
+        <Row class="m-b-20" :gutter="8" v-if="this.checkPermissions.validatePermission(this.allPermissions.add_projectbid, this.$store.getters.getPermissions)">
+          <i-col span="16">
+            <div class="content-data">
+              <div class="pad-15" v-if="!bidExists && this.projectData.bidding">
+                <legend>Submit your bid</legend>
+                <p>You can submit your bid by clicking on the <strong>Submit bid</strong> button bellow. You'll be requested to submit a quotation if your bid is accepted.</p>
+                <br/>
+                <button class="btn green" @click="newBidModal= true">Submit bid</button>
+                <Modal
+                  v-model="newBidModal"
+                  ok-text="Submit bid"
+                  @on-ok="saveBid"
+                  width="400"
+                  title="Submit your project bid">
+                  <p>You are about to submit your bid on this project.</p>
+                </Modal>
+              </div>
+              <div v-if="bidExists">
+
+                <div class="pad-15">
+                  <Alert v-if="bidExists && currentBid[0].bid_status === 'Open'" show-icon>
+                    You have already submitted your bid on this project. You can check the status of your bid below.
+                  </Alert>
+                  <Alert type="success" v-if="bidExists && currentBid[0].bid_status === 'Accepted'" show-icon>
+                    Your bid was accepted. Check on <strong>quotation</strong> page to submit your quote.
+                  </Alert>
+                  <Alert type="warning" v-if="bidExists && currentBid[0].bid_status === 'Denied'" show-icon>
+                    Your bid was denied. You cannot bid again or submit any quotes on this project.
+                  </Alert>
+                </div>
+
+                <Table :columns="currentBidColumns" :data="currentBid"></Table>
               </div>
             </div>
-          </div>
-        </div>
-        <div v-if="this.checkPermissions.validatePermission(this.allPermissions.change_project, this.$store.getters.getPermissions)">
+          </i-col>
+          <i-col span="8" v-if="bidExists || !bidExists && this.projectData.bidding">
+            <div class="content-data">
+              <div class="content-info">
+                <div class="content-info-card">
+                  <h4>What you need to know</h4>
+                  <ul>
+                    <li>You can only bid once on this project</li>
+                    <li>Bidding won't be enabled even if your current bid was denied.</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </i-col>
+        </Row>
+
+        <div class="content-data" v-if="this.checkPermissions.validatePermission(this.allPermissions.change_project, this.$store.getters.getPermissions)">
           <Table :columns="columns" :data="bids" :loading="pageData.loading"></Table>
           <Page v-if="!pageData.loading && pageData.totalPages > 1" :total="pageData.totalRecords" :current="pageData.currentPage" @on-change="paginateAction" />
           <!-- modals -->
@@ -104,6 +110,7 @@
             <p>When you deny this bid, this vendor will not be able to bid on this project again or send a quote once a request for quotation is made.</p>
           </Modal>
         </div>
+
       </div>
     </div>
 </template>

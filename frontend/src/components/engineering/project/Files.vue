@@ -78,7 +78,7 @@ export default {
           }
         },
         {
-          title: 'File URL',
+          title: 'Preview',
           align: 'left',
           sortable: true,
           render: (h, params) => {

@@ -122,3 +122,22 @@ class GroupsViewSet(APIView):
             groups.append(group_object)
 
         return Response({'results': groups})
+
+
+class UsersOptionViewSet(APIView):
+    permission_classes = (IsAuthenticated,)
+
+    def get(self, request):
+        all_users = User.objects.all()
+
+        users = []
+        """
+        get user options
+        """
+        for user in all_users:
+            user_object = {'value': user.id, 'label': f'{user.first_name} {user.last_name}'}
+
+            # append users
+            users.append(user_object)
+
+        return Response({'results': users})

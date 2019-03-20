@@ -14,11 +14,12 @@ import ViewGroup from '../components/users/groups/ViewGroup'
 import ParentEngineering from '../components/engineering/ParentEngineering'
 import Projects from '../components/engineering/projects/Projects'
 import ParentProject from '../components/engineering/project/ProjectParent'
-import ProjectOverview from '../components/engineering/project/Overview'
+import ProjectTeam from '../components/engineering/project/Team'
 import ProjectFiles from '../components/engineering/project/Files'
 import ProjectBudget from '../components/engineering/project/Budget'
 import ProjectBidding from '../components/engineering/project/Bidding'
 import ProjectQuotation from '../components/engineering/project/Quotation'
+import ProjectDesigns from '../components/engineering/project/Designs'
 
 Vue.use(Router)
 
@@ -135,14 +136,14 @@ export default new Router({
             title: 'Project',
             requiresAuth: true
           },
-          redirect: '/engineering/projects/:slug/overview',
+          redirect: '/engineering/projects/:slug/team',
           children: [
             {
-              path: 'overview',
-              name: 'project_overview',
-              component: ProjectOverview,
+              path: 'team',
+              name: 'project_team',
+              component: ProjectTeam,
               meta: {
-                title: 'Project Overview',
+                title: 'Project Team',
                 requiresAuth: true
               }
             },
@@ -188,6 +189,15 @@ export default new Router({
               component: ParentProject,
               meta: {
                 title: 'Project',
+                requiresAuth: true
+              }
+            },
+            {
+              path: 'designs',
+              name: 'project_designs',
+              component: ProjectDesigns,
+              meta: {
+                title: 'Project Designs',
                 requiresAuth: true
               }
             }

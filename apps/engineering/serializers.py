@@ -3,13 +3,14 @@ from rest_framework.exceptions import ValidationError
 from rest_framework.generics import get_object_or_404
 
 from apps.engineering.models import Project, ProjectFile, ProjectEquipment, ProjectBudget, ProjectBid, ProjectQuote, \
-    ProjectQuoteItem
+    ProjectQuoteItem, ProjectDesign
 from apps.users.serializers import UserSerializer
 from configs import BID_STATUS, QUOTE_STATUS
 
 
 class ProjectSerializer(serializers.ModelSerializer):
     lead = UserSerializer()
+    members = UserSerializer(many=True)
 
     class Meta:
         model = Project
@@ -33,6 +34,20 @@ class ProjectFileSerializer(serializers.ModelSerializer):
 class CreateProjectFileSerializer(serializers.ModelSerializer):
     class Meta:
         model = ProjectFile
+        fields = "__all__"
+
+
+class ProjectDesignSerializer(serializers.ModelSerializer):
+    project = ProjectSerializer()
+
+    class Meta:
+        model = ProjectDesign
+        fields = "__all__"
+
+
+class CreateProjectDesignSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ProjectDesign
         fields = "__all__"
 
 
