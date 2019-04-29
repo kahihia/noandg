@@ -35,6 +35,10 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.sites',
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
     'rest_framework',
     'rest_framework.authtoken',
     'webpack_loader',
@@ -45,6 +49,10 @@ INSTALLED_APPS += [
     'apps.general',
     'apps.users',
     'apps.engineering',
+    'apps.logistics',
+    'apps.compliance',
+    'apps.warehouse',
+    'apps.construction',
 ]
 
 MIDDLEWARE = [
@@ -128,40 +136,14 @@ MEDIA_URL = '/media/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
-WEBPACK_LOADER = {
-    'DEFAULT': {
-        'CACHE': not DEBUG,
-        'BUNDLE_DIR_NAME': '',
-        'STATS_FILE': os.path.join(BASE_DIR, 'frontend/webpack-stats.json'),
-        'POLL_INTERVAL': 0.1,
-        'TIMEOUT': None,
-        'IGNORE': ['.+\.hot-update.js', '.+\.map']
-    }
-}
-
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework.authentication.TokenAuthentication',
     ),
-    'DEFAULT_PAGINATION_CLASS': 'apps.general.views.APIPagination',
+    # 'DEFAULT_PAGINATION_CLASS': 'apps.general.views.APIPagination',
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
     'PAGE_SIZE': 10
 }
-
-# CORS_ORIGIN_WHITELIST = (
-#     'localhost:8000',
-#     'http://tropikal.localhost:8000',
-#     'localhost:9000',
-#     'localhost:8090',
-#     '127.0.0.1:8000',
-#     'tropikal.127.0.0.1:8000',
-#     '127.0.0.1:9000',
-#     'quard.herokuapp.com',
-#     'https://quard.herokuapp.com',
-#     'http://quard.herokuapp.com',
-#     'herokuapp.com',
-#     '*.localhost'
-# )
-CORS_ORIGIN_REGEX_WHITELIST = (r'^(http?://)?(\w+\.)?localhost\:8000$',)
 
 # Site
 

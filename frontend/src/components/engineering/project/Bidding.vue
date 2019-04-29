@@ -214,7 +214,8 @@ export default {
       ],
       acceptBidModal: false,
       denyBidModal: false,
-      selectedBid: []
+      selectedBid: [],
+      crudProject: []
     }
   },
   methods: {
@@ -226,8 +227,20 @@ export default {
         } else {
           this.buttonText = 'Enable bidding'
         }
+        this.fetchCrudProject()
         this.fetchBids()
         this.checkIfBidExists()
+      }).catch((e) => {
+        this.$notify({
+          group: 'error',
+          type: 'warn',
+          text: e.response.data.detail
+        })
+      })
+    },
+    fetchCrudProject () {
+      this.api['viewCrudProject'](this.slug, 'get', null, null).then(res => {
+        this.crudProject = res.data
       }).catch((e) => {
         this.$notify({
           group: 'error',
@@ -239,6 +252,7 @@ export default {
     saveProject () {
       this.projectData.bidding = !this.projectData.bidding
       this.projectData.lead = this.projectData.lead.id
+      this.projectData.members = this.crudProject.members
       this.api['projectView'](this.slug, 'put', null, this.projectData).then(res => {
         // success
         this.$notify({

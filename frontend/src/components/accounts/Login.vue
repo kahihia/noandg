@@ -1,33 +1,39 @@
 <template>
-  <Row class="text-center">
-    <i-col span="8" offset="8">
-      <h1 class="hero-headline">Sign in</h1>
+  <div>
+    <div class="login-top"></div>
+    <div class="login-content">
+      <Row class="text-center">
+        <i-col span="11" offset="6">
+          <h1 class="login-h1">Noandg ERP</h1>
+          <h2 class="login-h2">Log in to your account</h2>
 
-      <form class="card" action="" method="post" @submit.prevent="login">
+          <form class="login-pane" action="" method="post" @submit.prevent="login">
 
-        <div class="formInputContainer">
-          <label for="username">Your Email</label>
-          <input v-model="user.username" :required="user.username"
-                 class="input" type="text" value=""
-                 name="username" placeholder="Email Address"
-                 id="username">
-        </div>
+            <div class="formInputContainer">
+              <label for="username">Your Email</label>
+              <input v-model="user.username" :required="user.username"
+                     class="input" type="text" value=""
+                     name="username" placeholder="Email Address"
+                     id="username">
+            </div>
 
-        <div class="formInputContainer">
-          <label for="user_password">Your Password</label>
-          <input autocomplete="" :required="user.password" v-model="user.password"
-                 class="input"
-                 type="password" name="password" placeholder="Password"
-                 id="user_password">
-        </div>
+            <div class="formInputContainer">
+              <label for="user_password">Your Password</label>
+              <input autocomplete="" :required="user.password" v-model="user.password"
+                     class="input"
+                     type="password" name="password" placeholder="Password"
+                     id="user_password">
+            </div>
 
-        <div>
-          <button type="submit" class="btn-blue">Sign in</button>
-        </div>
+            <div>
+              <button type="submit" class="btn-blue">Sign in</button>
+            </div>
 
-      </form>
-    </i-col>
-  </Row>
+          </form>
+        </i-col>
+      </Row>
+    </div>
+  </div>
 </template>
 
 <script>
@@ -102,4 +108,83 @@ export default {
 </script>
 
 <style>
+  .login-top{
+    background: #88cf8f;
+    height: 370px;
+  }
+  .login-content{
+    margin-top: -260px;
+    color: #fff;
+  }
+  .login-h1{
+    font-size: 40px;
+    line-height: 1.16;
+    text-align: center;
+  }
+
+  .login-h2{
+    font-size: 16px;
+    text-align: center;
+    font-weight: 500;
+    line-height: 1.52;
+    margin-bottom: 0;
+    padding-bottom: 25px;
+    padding-top: 25px;
+  }
+
+  .login-pane{
+    background-color: #fff;
+    border-radius: 4px;
+    padding: 48px 45px;
+  }
+
+  .login-pane label{
+    display: block;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: .5px;
+    line-height: 1.45;
+    margin-bottom: 5px;
+    text-transform: uppercase;
+  }
+
+  .login-pane input{
+    background-color: #e3e8eb;
+    border: 2px solid #e3e8eb;
+    border-radius: 4px;
+    box-shadow: none;
+    color: #282a2d;
+    display: block;
+    height: 48px;
+    outline: none!important;
+    padding-left: 16px;
+    padding-right: 16px;
+    resize: none;
+    transition: border-color .3s;
+    width: 100%;
+  }
+  .login-pane button {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    align-items: baseline;
+    justify-content: center;
+    background-color: #e24f54;
+    border: 0;
+    border-radius: 24px;
+    color: #fff;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 500;
+    height: 48px;
+    line-height: 48px;
+    width: 100%;
+    position: relative;
+    text-align: center;
+    text-decoration: none;
+    text-transform: uppercase;
+    -moz-osx-font-smoothing: grayscale;
+    padding: 0 15px;
+    margin-top: 30px;
+}
 </style>

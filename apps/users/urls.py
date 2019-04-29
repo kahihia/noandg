@@ -10,8 +10,10 @@ router.register(r'create/group', views.CreateGroupViewSet)
 router.register(r'create/employee', views.CreateUserViewSet)
 
 urlpatterns = [
+    path('users/directory/', views.UsersView.as_view(), name='users_directory'),
     path('api/v1/users/permissions/', views.PermissionViewSet.as_view()),
     path('api/v1/users/forms/groups/', views.GroupsViewSet.as_view()),
     path('api/v1/users/forms/users/', views.UsersOptionViewSet.as_view()),
+    path('api/v1/users/remove/user/', views.DeleteGroupUserViewSet.as_view()),
     path('api/v1/users/', include(router.urls))
 ]

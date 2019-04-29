@@ -1,6 +1,9 @@
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.models import User, Group, Permission
 from django.contrib.contenttypes.models import ContentType
 from django.db.models import Q
+from django.shortcuts import render
+from django.views.generic.base import View
 from rest_framework import viewsets
 from rest_framework.generics import get_object_or_404
 from rest_framework.permissions import IsAuthenticated, DjangoModelPermissions
@@ -10,6 +13,15 @@ from rest_framework.views import APIView
 from apps.users.models import AllowedPermission
 from apps.users.serializers import GroupSerializer, PermissionSerializer, UserSerializer, CreateGroupSerializer, \
     CreateUserSerializer
+
+
+class UsersView(LoginRequiredMixin, View):
+    template_name = 'users/index.html'
+    context = {}
+
+    def get(self, request):
+        self.context['users'] = User.objects.all()
+        return render(request, self.template_name, self.context)
 
 
 class UserViewSet(viewsets.ModelViewSet):
@@ -35,7 +47,6 @@ class UserViewSet(viewsets.ModelViewSet):
             return users
 
     serializer_class = UserSerializer
-    permission_classes = (IsAuthenticated, DjangoModelPermissions,)
     lookup_field = 'id'
 
 
@@ -141,3 +152,15 @@ class UsersOptionViewSet(APIView):
             users.append(user_object)
 
         return Response({'results': users})
+
+
+class DeleteGroupUserViewSet(APIView):
+    permission_classes = (IsAuthenticated,)
+
+    def get(self, request):
+        group_name = request.GET.get('group')
+        user_id = request.GET.get('user')
+        g = get_object_or_404(Group, name=group_name)
+        g.user_set.remove(user_id)
+
+        return Response({'results': True})

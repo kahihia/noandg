@@ -22,9 +22,14 @@ from noandgerp import settings
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('accounts/', include('allauth.urls')),
     path('', include('apps.general.urls')),
     path('', include('apps.users.urls')),
     path('', include('apps.engineering.urls')),
+    # path('', include('apps.logistics.urls')),
+    # path('', include('apps.compliance.urls')),
+    # path('', include('apps.warehouse.urls')),
+    # path('', include('apps.construction.urls')),
 ]
 
 if settings.DEBUG:

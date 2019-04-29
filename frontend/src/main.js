@@ -8,7 +8,7 @@ import VueSession from 'vue-session'
 import Notification from 'vue-notification'
 import iView from 'iview'
 import locale from 'iview/src/locale/lang/en-US'
-// import 'iview/dist/styles/iview.css'
+import 'iview/dist/styles/iview.css'
 import router from './router'
 
 import constants from './constants/index'
@@ -16,6 +16,29 @@ import api from './api/api'
 import store from './store/index'
 import checkPermissions from './constants/checkperms'
 import allPermissions from './constants/permissions'
+import VueGoogleCharts from 'vue-google-charts'
+import moment from 'moment'
+
+Vue.use(VueGoogleCharts)
+
+// moment
+Vue.filter('createdShort', function (value) {
+  if (value) {
+    return moment(String(value)).format('MMM Do YYYY')
+  }
+})
+
+Vue.filter('createdOrderDate', function (value) {
+  if (value) {
+    return moment(String(value)).format('MMMM DD, YYYY')
+  }
+})
+
+Vue.filter('createdOrderTime', function (value) {
+  if (value) {
+    return moment.utc(String(value)).format('h:mm a')
+  }
+})
 
 Vue.config.productionTip = false
 
@@ -41,7 +64,8 @@ Vue.mixin({
       constants: constants,
       api: api,
       checkPermissions: checkPermissions,
-      allPermissions: allPermissions
+      allPermissions: allPermissions,
+      moment: moment
     }
   }
 })

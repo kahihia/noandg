@@ -1,15 +1,13 @@
 <template>
     <div>
-      <div class="page-header">
-        <div class="page-header-left">
-          <h1>
-            <div class="text">Groups</div>
-          </h1>
-        </div>
-        <div class="page-header-right">
+      <div class="top-header">
+        <h1>
+          <span class="text">Groups</span>
+        </h1>
+        <div class="left-links">
           <div class="buttons">
             <div class="button-group">
-              <button class="btn-blue" @click="newGroupModal= true">Create group</button>
+              <button class="btn green" @click="newGroupModal= true">Create group</button>
               <Modal
                 v-model="newGroupModal"
                 ok-text="Create group"
@@ -33,6 +31,7 @@
           </div>
         </div>
       </div>
+
       <div class="page-info">
         <span>
           Manage product access and roles in bulk by adding users to groups that have the required permissions.
@@ -40,20 +39,6 @@
         </span>
       </div>
       <div class="content-data">
-        <div class="items-search">
-          <div class="items-search-padding">
-            <div class="items-search-w">
-              <div class="items-search-padding-pane">
-                <div class="items-search-padding-pane-inner">
-                  <input v-model="search.q" class="input" size="60" @keyup.prevent="fetchGroups()">
-                  <span class="items-search-icon">
-                    <svg width="24" height="24" viewBox="0 0 24 24" focusable="false" role="presentation"><path d="M16.436 15.085l3.94 4.01a1 1 0 0 1-1.425 1.402l-3.938-4.006a7.5 7.5 0 1 1 1.423-1.406zM10.5 16a5.5 5.5 0 1 0 0-11 5.5 5.5 0 0 0 0 11z" fill="currentColor" fill-rule="evenodd"></path></svg>
-                  </span>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
         <Table :columns="columns" :data="groups" :loading="pageData.loading" @on-row-click="viewGroup"></Table>
         <Page v-if="!pageData.loading && pageData.totalPages > 1" :total="pageData.totalRecords" :current="pageData.currentPage" @on-change="paginateAction" />
       </div>
@@ -82,6 +67,7 @@ export default {
         {
           title: 'Name',
           align: 'left',
+          sortable: true,
           render: (h, params) => {
             return h('span', params.row.name)
           }

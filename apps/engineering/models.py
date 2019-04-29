@@ -1,17 +1,19 @@
 from django.contrib.auth.models import User
 from django.db import models
 
-from configs import random_code, BID_STATUS, QUOTE_STATUS, DESIGN_TYPE
+from configs import random_code, BID_STATUS, QUOTE_STATUS, DESIGN_TYPE, FABRICATION_STATUS
 
 
 class Project(models.Model):
     name = models.CharField(max_length=255, unique=True)
     lead = models.ForeignKey(User, on_delete=models.SET(1))
     description = models.TextField()
-    owner_name = models.CharField(max_length=255)
-    owner_email = models.EmailField(max_length=55)
+    owner_name = models.CharField(max_length=255, null=True, blank=True)
+    owner_email = models.EmailField(max_length=55, null=True, blank=True)
     bidding = models.BooleanField(default=False, blank=True)
+    logistics_bidding = models.BooleanField(default=False, blank=True)
     members = models.ManyToManyField(User, related_name='project_member', blank=True)
+    commissioned = models.BooleanField(default=False)
     slug = models.SlugField(null=True, db_index=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -28,9 +30,30 @@ class Project(models.Model):
         return self.name
 
 
+class ProjectStage(models.Model):
+    project = models.ForeignKey(Project, on_delete=models.CASCADE)
+    name = models.CharField(max_length=255, unique=True)
+    stage_status = models.BooleanField(default=False)
+    stage_percentage = models.CharField(max_length=20)
+    slug = models.SlugField(null=True, db_index=True, blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        ordering = ['created_at']
+
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            self.slug = random_code()
+        super().save(*args, **kwargs)
+
+    def __str__(self):
+        return self.project.name
+
+
 class ProjectFile(models.Model):
     project = models.ForeignKey(Project, on_delete=models.CASCADE)
-    name = models.TextField()
+    name = models.CharField(max_length=255)
     description = models.TextField()
     document = models.FileField(upload_to='documents')
     slug = models.SlugField(null=True, db_index=True, blank=True)
@@ -182,3 +205,25 @@ class ProjectQuoteItem(models.Model):
 
     def __str__(self):
         return f'{self.equipment.name}'
+
+
+class ProjectFabrication(models.Model):
+    title = models.CharField(max_length=255)
+    project = models.ForeignKey(Project, on_delete=models.CASCADE)
+    team = models.ForeignKey(User, on_delete=models.CASCADE)
+    description = models.TextField()
+    fabrication_status = models.CharField(max_length=68, choices=FABRICATION_STATUS, blank=False, default='Ongoing')
+    slug = models.SlugField(null=True, db_index=True, blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        ordering = ['created_at']
+
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            self.slug = random_code()
+        super().save(*args, **kwargs)
+
+    def __str__(self):
+        return f'{self.title}'

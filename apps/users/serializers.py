@@ -53,7 +53,7 @@ class CreateUserSerializer(serializers.ModelSerializer):
 
         return user
 
-    def update(self, instance, validated_data):
-        instance.save()
-
-        return instance
+    # def update(self, instance, validated_data):
+    #     instance.save()
+    #
+    #     return instance

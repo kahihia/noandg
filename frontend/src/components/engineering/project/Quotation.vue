@@ -486,6 +486,7 @@ export default {
         this.pageData.currentPage = data.current_page
 
         this.quoteitems = data.results
+        console.log(this.quoteitems)
         this.pageData.loading = false
       }).catch((e) => {
         this.$notify({

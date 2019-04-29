@@ -32,15 +32,6 @@
       </div>
 
       <div class="content-data">
-        <Modal
-          v-model="viewFileModal"
-          ok-text="Delete file"
-          width="600"
-          title="File preview">
-          <p>You can preview and delete a given file.</p>
-          <br/>
-          <iframe width="565" height="400" :src="'https://docs.google.com/gview?url='+selectedFile.document+'&embedded=true'"></iframe>
-        </Modal>
         <Table :columns="columns" :data="projectData.members" :loading="pageData.loading"></Table>
         <Page v-if="!pageData.loading && pageData.totalPages > 1" :total="pageData.totalRecords" :current="pageData.currentPage" @on-change="paginateAction" />
       </div>
