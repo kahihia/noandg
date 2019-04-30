@@ -1,0 +1,113 @@
+{% extends 'engineering/project.html' %}
+
+{% load static %}
+
+{% block project_content %}
+
+    <!-- .section-block -->
+    <div class="section-block">
+        <div class="alert alert-secondary has-icon">
+            <div class="alert-icon">
+                <i class="oi oi-info"></i>
+            </div>
+            {% if bid_placed %}
+                <p>You placed your bid on this project. {% if bid.bid_status == 'Accepted' %}
+                    Your bid was accepted. Please submit your quote below {% else %} Wait for your bid to be accepted
+                    before you can submit a qoute
+                {% endif %}.</p>
+            {% else %}
+                <p>You have not placed your bid on this project. You can do that on bids tab.</p>
+            {% endif %}
+        </div>
+    </div>
+    <!-- /.section-block -->
+
+    <!-- .card -->
+    <div class="card card-fluid">
+
+        <div class="card-header d-flex">
+
+            <h5>Quotation</h5>
+
+        </div>
+
+        <!-- .card-body -->
+        <div class="card-body">
+
+            {% if True %}
+                <!-- .table-responsive -->
+                <div class="table-responsive">
+                    <!-- .table -->
+                    <table class="table">
+                        <!-- thead -->
+                        <thead>
+                        <tr>
+                            <th style="min-width:200px">Name</th>
+                            <th>Quantity</th>
+                            <th>Length</th>
+                            <th>Width</th>
+                            <th>Height</th>
+                            <th>Weight</th>
+                            <th style="width:100px; min-width:100px;"> &nbsp;</th>
+                        </tr>
+                        </thead><!-- /thead -->
+                        <!-- tbody -->
+                        <tbody>
+
+                        {% for project_equipment in project_equipments %}
+                            <!-- tr -->
+                            <tr>
+                                <td>
+                                    <a href="{% url 'project_equipment_edit' project.slug project_equipment.slug %}" class="tile tile-img mr-1">
+                                        <span class="img-fluid">{{ project_equipment.name|first|capfirst }}</span>
+                                    </a>
+                                    <a href="{% url 'project_equipment_edit' project.slug project_equipment.slug %}">{{ project_equipment.name }}</a>
+                                </td>
+                                <td class="align-middle">
+                                    {{ project_equipment.estimated_quantity }}</td>
+                                <td class="align-middle">
+                                    {{ project_equipment.length }}{{ project_equipment.measurement_in }}</td>
+                                <td class="align-middle">
+                                    {{ project_equipment.width }}{{ project_equipment.measurement_in }}</td>
+                                <td class="align-middle">
+                                    {{ project_equipment.height }}{{ project_equipment.measurement_in }}</td>
+                                <td class="align-middle">
+                                    {{ project_equipment.weight }}{{ project_equipment.weight_in }}</td>
+                                <td class="align-middle text-right">
+                                    <a href="{% url 'project_equipment_edit' project.slug project_equipment.slug %}"
+                                       class="btn btn-sm btn-secondary"><i
+                                            class="oi oi-pencil"></i>
+                                        <span class="sr-only">Quote</span></a>
+                                </td>
+                            </tr><!-- /tr -->
+                        {% endfor %}
+
+                        </tbody><!-- /tbody -->
+                    </table><!-- /.table -->
+                </div><!-- /.table-responsive -->
+            {% else %}
+                <!-- .empty-state -->
+                <div id="notfound-state" class="empty-state">
+                    <!-- .empty-state-container -->
+                    <div class="empty-state-container">
+                        <div class="state-figure">
+                            <img class="img-fluid" src="{% static 'assets/images/illustration/img-7.svg' %}" alt=""
+                                 style="max-width: 300px">
+                        </div>
+                        <h3 class="state-header"> No Bids, Yet. </h3>
+
+                        <p>You can place your bid now by clicking on <strong>Place Bid</strong> button.</p>
+                        <form method="post" action="{% url 'project_bidding' project.slug %}">
+                            {% csrf_token %}
+                            <button class="btn btn-primary ml-auto" type="submit">Place Bid</button>
+                        </form>
+
+                    </div><!-- /.empty-state-container -->
+                </div><!-- /.empty-state -->
+            {% endif %}
+
+        </div><!-- /.card-body -->
+
+    </div><!-- /.card -->
+
+{% endblock %}

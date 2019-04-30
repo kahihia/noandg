@@ -41,7 +41,9 @@ urlpatterns = [
     path('engineering/project/<slug>/bidding/', views.ProjectBiddingView.as_view(), name='project_bidding'),
     path('engineering/project/<slug>/bidding/status/', views.ProjectBiddingEditView.as_view(),
          name='project_bidding_status'),
-    path('engineering/project/<slug>/bidding/status/<bid_slug>/<bid_action>/', views.ProjectBidStatusView.as_view(), name='project_bid_status'),
+    path('engineering/project/<slug>/bidding/status/<bid_slug>/<bid_action>/', views.ProjectBidStatusView.as_view(),
+         name='project_bid_status'),
+    path('engineering/project/<slug>/quotation/', views.ProjectQuotationView.as_view(), name='project_quotation'),
 
     path('api/v1/engineering/forms/leads/', views.ProjectLeadsViewSet.as_view()),
     path('api/v1/engineering/forms/teams/', views.ProjectTeamViewSet.as_view()),

@@ -123,7 +123,8 @@
                            href="{% url 'project_equipments' project.slug %}">Equipments</a>
                         <a class="nav-link {% if '/bidding/' in request.path %}active{% endif %}"
                            href="{% url 'project_bidding' project.slug %}">Biding</a>
-                        <a class="nav-link" href="">Quotation</a>
+                        <a class="nav-link {% if '/quotation/' in request.path %}active{% endif %}"
+                           href="{% url 'project_quotation' project.slug %}">Quotation</a>
                         <a class="nav-link" href="">Fabrication</a>
                     </div><!-- /.nav -->
                 </div><!-- /.nav-scroller -->

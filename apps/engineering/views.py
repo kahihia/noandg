@@ -315,6 +315,38 @@ class ProjectBidStatusView(LoginRequiredMixin, View):
         return redirect(reverse('project_bidding', kwargs={'slug': project.slug}))
 
 
+class ProjectQuotationView(LoginRequiredMixin, View):
+    template_name = 'engineering/quotation/index.html'
+    context = {}
+
+    def get(self, request, *args, **kwargs):
+        project = get_object_or_404(Project, slug=kwargs['slug'])
+        project_bid = ProjectBid.objects.filter(project=project, vendor=request.user)
+        if project_bid.exists():
+            bid_placed = True
+            bid = ProjectBid.objects.get(project=project, vendor=request.user)
+        else:
+            bid_placed = False
+            bid = []
+
+        self.context['project'] = project
+        self.context['bid_placed'] = bid_placed
+        self.context['bid'] = bid
+        self.context['project_equipments'] = ProjectEquipment.objects.filter(project=project)
+
+        return render(request, self.template_name, self.context)
+
+    def post(self, request, *args, **kwargs):
+        project = get_object_or_404(Project, slug=kwargs['slug'])
+        project_bid = ProjectBid()
+        project_bid.project = project
+        project_bid.vendor = request.user
+        project_bid.save()
+
+        messages.success(request, 'Bid successfully submitted.')
+        return redirect(reverse('project_bidding', kwargs={'slug': project.slug}))
+
+
 class CreateProjectViewSet(viewsets.ModelViewSet):
     queryset = Project.objects.all()
     serializer_class = CreateProjectSerializer
