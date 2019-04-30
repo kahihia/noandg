@@ -117,9 +117,12 @@
                            href="{% url 'project_overview' project.slug %}">Overview</a>
                         <a class="nav-link {% if '/documents/' in request.path %}active{% endif %}"
                            href="{% url 'project_documents' project.slug %}">Documents</a>
-                        <a class="nav-link" href="">Designs</a>
-                        <a class="nav-link" href="">Equipments</a>
-                        <a class="nav-link" href="">Biding</a>
+                        <a class="nav-link {% if '/designs/' in request.path %}active{% endif %}"
+                           href="{% url 'project_designs' project.slug %}">Designs</a>
+                        <a class="nav-link {% if '/equipments/' in request.path %}active{% endif %}"
+                           href="{% url 'project_equipments' project.slug %}">Equipments</a>
+                        <a class="nav-link {% if '/bidding/' in request.path %}active{% endif %}"
+                           href="{% url 'project_bidding' project.slug %}">Biding</a>
                         <a class="nav-link" href="">Quotation</a>
                         <a class="nav-link" href="">Fabrication</a>
                     </div><!-- /.nav -->

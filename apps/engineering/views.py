@@ -13,7 +13,7 @@ from rest_framework.permissions import IsAuthenticated, DjangoModelPermissions
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from apps.engineering.forms import ProjectForm, ProjectFileForm
+from apps.engineering.forms import ProjectForm, ProjectFileForm, ProjectDesignForm, ProjectEquipmentForm
 from apps.engineering.models import Project, ProjectFile, ProjectEquipment, ProjectBudget, ProjectBid, ProjectQuote, \
     ProjectQuoteItem, ProjectDesign, ProjectFabrication, ProjectStage
 from apps.engineering.serializers import CreateProjectSerializer, ProjectSerializer, CreateProjectFileSerializer, \
@@ -123,6 +123,171 @@ class ProjectFileDeleteView(LoginRequiredMixin, View):
         messages.success(request, 'Document deleted successfully.')
 
         return redirect(reverse('project_documents', kwargs={'slug': project.slug}))
+
+
+class ProjectDesignsView(LoginRequiredMixin, View):
+    template_name = 'engineering/designs/index.html'
+    context = {}
+
+    def get(self, request, *args, **kwargs):
+        project = get_object_or_404(Project, slug=kwargs['slug'])
+        project_designs = ProjectDesign.objects.filter(project=project)
+        project_design_form = ProjectDesignForm
+
+        self.context['project'] = project
+        self.context['project_designs'] = project_designs
+        self.context['form'] = project_design_form
+
+        return render(request, self.template_name, self.context)
+
+    def post(self, request, *args, **kwargs):
+        project = get_object_or_404(Project, slug=kwargs['slug'])
+        project_design_form = ProjectDesignForm(request.POST, request.FILES)
+
+        if project_design_form.is_valid():
+            project_data = project_design_form.save(commit=False)
+            project_data.project = project
+            project_data.save()
+
+            messages.success(request, 'Design successfully uploaded.')
+            return redirect(reverse('project_designs', kwargs={'slug': project.slug}))
+
+        else:
+            messages.warning(request, project_design_form.errors)
+            self.context['form'] = project_design_form
+            return render(request, self.template_name, self.context)
+
+
+class ProjectDesignDeleteView(LoginRequiredMixin, View):
+    context = {}
+
+    def get(self, request, *args, **kwargs):
+        project = get_object_or_404(Project, slug=kwargs['slug'])
+        project_design = get_object_or_404(ProjectDesign, slug=kwargs['file_slug'])
+        project_design.delete()
+
+        messages.success(request, 'Design deleted successfully.')
+
+        return redirect(reverse('project_designs', kwargs={'slug': project.slug}))
+
+
+class ProjectEquipmentsView(LoginRequiredMixin, View):
+    template_name = 'engineering/equipments/index.html'
+    context = {}
+
+    def get(self, request, *args, **kwargs):
+        project = get_object_or_404(Project, slug=kwargs['slug'])
+        project_equipments = ProjectEquipment.objects.filter(project=project)
+        project_equipment_form = ProjectEquipmentForm
+
+        self.context['project'] = project
+        self.context['project_equipments'] = project_equipments
+        self.context['form'] = project_equipment_form
+
+        return render(request, self.template_name, self.context)
+
+    def post(self, request, *args, **kwargs):
+        project = get_object_or_404(Project, slug=kwargs['slug'])
+        project_equipment_form = ProjectEquipmentForm(request.POST)
+
+        if project_equipment_form.is_valid():
+            project_data = project_equipment_form.save(commit=False)
+            project_data.project = project
+            project_data.save()
+
+            messages.success(request, 'Equipment successfully created.')
+            return redirect(reverse('project_equipments', kwargs={'slug': project.slug}))
+
+        else:
+            messages.warning(request, project_equipment_form.errors)
+            self.context['form'] = project_equipment_form
+            return render(request, self.template_name, self.context)
+
+
+class ProjectEquipmentDeleteView(LoginRequiredMixin, View):
+    context = {}
+
+    def get(self, request, *args, **kwargs):
+        project = get_object_or_404(Project, slug=kwargs['slug'])
+        project_equipment = get_object_or_404(ProjectEquipment, slug=kwargs['file_slug'])
+        project_equipment.delete()
+
+        messages.success(request, 'Equipments deleted successfully.')
+
+        return redirect(reverse('project_equipments', kwargs={'slug': project.slug}))
+
+
+class ProjectEquipmentView(LoginRequiredMixin, View):
+    template_name = 'engineering/equipments/edit.html'
+    context = {}
+
+    def get(self, request, *args, **kwargs):
+        project = get_object_or_404(Project, slug=kwargs['slug'])
+        project_equipment = get_object_or_404(ProjectEquipment, slug=kwargs['equipment_slug'])
+        project_equipment_form = ProjectEquipmentForm(instance=project_equipment)
+
+        self.context['project'] = project
+        self.context['project_equipment'] = project_equipment
+        self.context['form'] = project_equipment_form
+
+        return render(request, self.template_name, self.context)
+
+    def post(self, request, *args, **kwargs):
+        project = get_object_or_404(Project, slug=kwargs['slug'])
+        project_equipment = get_object_or_404(ProjectEquipment, slug=kwargs['equipment_slug'])
+        project_equipment_form = ProjectEquipmentForm(request.POST, instance=project_equipment)
+
+        if project_equipment_form.is_valid():
+            project_data = project_equipment_form.save(commit=False)
+            project_data.project = project
+            project_data.save()
+
+            messages.success(request, 'Changes successfully saved.')
+            return redirect(reverse('project_equipment_edit',
+                                    kwargs={'slug': project.slug, 'equipment_slug': project_equipment.slug}))
+
+        else:
+            messages.warning(request, project_equipment_form.errors)
+            self.context['form'] = project_equipment_form
+
+            return render(request, self.template_name, self.context)
+
+
+class ProjectBiddingView(LoginRequiredMixin, View):
+    template_name = 'engineering/bidding/index.html'
+    context = {}
+
+    def get(self, request, *args, **kwargs):
+        project = get_object_or_404(Project, slug=kwargs['slug'])
+        project_bids = ProjectBid.objects.filter(project=project)
+
+        self.context['project'] = project
+        self.context['project_bids'] = project_bids
+
+        return render(request, self.template_name, self.context)
+
+    def post(self, request, *args, **kwargs):
+        project = get_object_or_404(Project, slug=kwargs['slug'])
+        project_bid = ProjectBid()
+        project_bid.project = project
+        project_bid.vendor = request.user
+        project_bid.save()
+
+        messages.success(request, 'Bid successfully submitted.')
+        return redirect(reverse('project_bidding', kwargs={'slug': project.slug}))
+
+
+class ProjectBiddingEditView(LoginRequiredMixin, View):
+    context = {}
+
+    def get(self, request, *args, **kwargs):
+        project = get_object_or_404(Project, slug=kwargs['slug'])
+        project.bidding = not project.bidding
+        project.save()
+
+        messages.success(request, 'Project bidding updated successfully.')
+
+        return redirect(reverse('project_bidding', kwargs={'slug': project.slug}))
 
 
 class CreateProjectViewSet(viewsets.ModelViewSet):

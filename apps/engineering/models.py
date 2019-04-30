@@ -74,7 +74,7 @@ class ProjectFile(models.Model):
 
 class ProjectDesign(models.Model):
     project = models.ForeignKey(Project, on_delete=models.CASCADE)
-    name = models.TextField()
+    name = models.CharField(max_length=255)
     description = models.TextField()
     document = models.FileField(upload_to='designs')
     design_type = models.CharField(max_length=68, choices=DESIGN_TYPE, blank=False, default='FEED')
