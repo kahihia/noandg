@@ -39,7 +39,9 @@ urlpatterns = [
     path('engineering/project/<slug>/equipments/<equipment_slug>/edit/', views.ProjectEquipmentView.as_view(),
          name='project_equipment_edit'),
     path('engineering/project/<slug>/bidding/', views.ProjectBiddingView.as_view(), name='project_bidding'),
-    path('engineering/project/<slug>/bidding/status/', views.ProjectBiddingEditView.as_view(), name='project_bidding_status'),
+    path('engineering/project/<slug>/bidding/status/', views.ProjectBiddingEditView.as_view(),
+         name='project_bidding_status'),
+    path('engineering/project/<slug>/bidding/status/<bid_slug>/<bid_action>/', views.ProjectBidStatusView.as_view(), name='project_bid_status'),
 
     path('api/v1/engineering/forms/leads/', views.ProjectLeadsViewSet.as_view()),
     path('api/v1/engineering/forms/teams/', views.ProjectTeamViewSet.as_view()),

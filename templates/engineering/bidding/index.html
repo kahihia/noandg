@@ -52,7 +52,7 @@
                             <th style="min-width:320px">Vendor</th>
                             <th>Bid Status</th>
                             <th>Submitted On</th>
-                            <th style="width:100px; min-width:100px;"> &nbsp;</th>
+                            <th style="width:130px; min-width:100px;"> &nbsp;</th>
                         </tr>
                         </thead><!-- /thead -->
                         <!-- tbody -->
@@ -77,12 +77,22 @@
                                 <td class="align-middle">
                                     {{ project_bid.created_at|date }}</td>
                                 <td class="align-middle text-right">
-                                    <a href=""
-                                       class="btn btn-sm btn-icon btn-secondary"><i
-                                            class="oi oi-eye"></i>
-                                        <span class="sr-only">View</span></a>
+                                    {% if project_bid.bid_status != 'Accepted' or project_bid.bid_status == 'Open' %}
+                                        <a href="{% url 'project_bid_status' project.slug project_bid.slug 'accept' %}"
+                                           class="btn btn-sm btn-icon btn-secondary"><i
+                                                class="oi oi-check"></i>
+                                            <span class="sr-only">Accept</span></a>
+                                    {% endif %}
 
-                                    <a href=""
+
+                                    {% if project_bid.bid_status != 'Denied' or project_bid.bid_status == 'Open' %}
+                                        <a href="{% url 'project_bid_status' project.slug project_bid.slug 'deny' %}"
+                                           class="btn btn-sm btn-icon btn-warning"><i
+                                                class="oi oi-x"></i>
+                                            <span class="sr-only">Deny</span></a>
+                                    {% endif %}
+
+                                    <a href="{% url 'project_bid_status' project.slug project_bid.slug 'delete' %}"
                                        class="btn btn-sm btn-icon btn-danger"><i
                                             class="far fa-trash-alt"></i> <span
                                             class="sr-only">Remove</span></a>

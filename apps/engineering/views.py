@@ -290,6 +290,31 @@ class ProjectBiddingEditView(LoginRequiredMixin, View):
         return redirect(reverse('project_bidding', kwargs={'slug': project.slug}))
 
 
+class ProjectBidStatusView(LoginRequiredMixin, View):
+    context = {}
+
+    def get(self, request, *args, **kwargs):
+        project = get_object_or_404(Project, slug=kwargs['slug'])
+        bid = get_object_or_404(ProjectBid, slug=kwargs['bid_slug'])
+        bid_action = kwargs['bid_action']
+
+        if bid_action == 'accept':
+            bid.bid_status = 'Accepted'
+            bid.save()
+            messages.success(request, 'Bid status updated successfully.')
+        elif bid_action == 'deny':
+            bid.bid_status = 'Denied'
+            bid.save()
+            messages.success(request, 'Bid status updated successfully.')
+        elif bid_action == 'delete':
+            bid.delete()
+            messages.success(request, 'Bid deleted successfully.')
+        else:
+            return redirect(reverse('project_bidding', kwargs={'slug': project.slug}))
+
+        return redirect(reverse('project_bidding', kwargs={'slug': project.slug}))
+
+
 class CreateProjectViewSet(viewsets.ModelViewSet):
     queryset = Project.objects.all()
     serializer_class = CreateProjectSerializer
