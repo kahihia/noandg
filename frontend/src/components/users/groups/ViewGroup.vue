@@ -1,23 +1,19 @@
 <template>
     <div>
-      <div class="breadcrumbs">
-        <router-link :to="{name: 'groups_directory'}" class="breadcrumb">
-          <span class="breadcrumb-back">
-            <svg width="24" height="24" viewBox="0 0 24 24" focusable="false" role="presentation"><path d="M8.414 11.5H18a1 1 0 0 1 0 2H8.414l3.793 3.793a1 1 0 0 1-1.414 1.414l-5.5-5.5a1 1 0 0 1 0-1.414l5.5-5.5a1 1 0 0 1 1.414 1.414L8.414 11.5z" fill="currentColor" fill-rule="evenodd"></path></svg>
-          </span>
-          <span class="breadcrumb-text">Groups</span>
-        </router-link>
+      <div class="top-header">
+        <h1>
+          <span class="text">{{userGroup.name}}</span>
+        </h1>
       </div>
-      <div class="page-header">
-        <div class="page-header-left">
-          <h1>
-            <div class="text">{{userGroup.name}}</div>
-          </h1>
-        </div>
-        <div class="page-header-right">
+
+      <div class="bottom-header">
+        <h1>
+          <div class="text">Groups</div>
+        </h1>
+        <div class="left-links">
           <div class="buttons">
             <div class="button-group">
-              <button class="btn-blue" @click="editGroupModal= true">Edit name</button>
+              <button class="btn green" @click="editGroupModal= true">Edit name</button>
               <Modal
                 v-model="editGroupModal"
                 ok-text="Save changes"
@@ -37,14 +33,15 @@
               </Modal>
             </div>
             <div class="button-group">
-              <button class="btn-gray" @click="permissionGroupModal =true">Permissions</button>
+              <button class="btn gray" @click="permissionGroupModal =true">Permissions</button>
               <Modal
                 v-model="permissionGroupModal"
                 ok-text="Save permissions"
                 @on-ok="saveGroup"
-                width="400"
+                width="600"
                 title="Edit group's permissions">
                 <p>Grant or deny users access to some system features by setting them to a given group.</p>
+                <br/>
                 <div class="permissions">
                   <Collapse>
                     <Panel class="permBox" v-for="(permission) in permissions" :key="permission.model" :name="permission.model">
@@ -66,7 +63,7 @@
               </Modal>
             </div>
             <div class="button-group delete-group">
-              <button class="btn-gray" @click="deleteGroupModal= true">Delete group</button>
+              <button class="btn red" @click="deleteGroupModal= true">Delete group</button>
               <Modal
                 class="delete-group"
                 v-model="deleteGroupModal"
@@ -76,33 +73,29 @@
                 :title="'Delete ' + userGroup.name + '?'">
                 <p>Users in this group will not be affected. Deleting a group can't be undone.</p>
               </Modal>
+              <Modal
+                class="delete-group"
+                v-model="deleteUserModal"
+                ok-text="Remove user"
+                @on-ok="removeUser"
+                width="400"
+                title="Remove this user from this group">
+                <p>You are about to remove this user from this group. You can add this user after this action.</p>
+              </Modal>
             </div>
           </div>
         </div>
       </div>
+
       <div class="page-info">
         <dl class="d-none">
           <dt class="group-title">Group members</dt>
           <dd class="group-members">
-            <span>{{pageData.totalRecords}}</span>
+            <span>{{pageData.totalRecords}} users found</span>
           </dd>
         </dl>
       </div>
       <div class="content-data">
-        <div class="items-search">
-          <div class="items-search-padding">
-            <div class="items-search-w">
-              <div class="items-search-padding-pane">
-                <div class="items-search-padding-pane-inner">
-                  <input v-model="search.fq" class="input" size="60" @keyup.prevent="fetchUsers()">
-                  <span class="items-search-icon">
-                    <svg width="24" height="24" viewBox="0 0 24 24" focusable="false" role="presentation"><path d="M16.436 15.085l3.94 4.01a1 1 0 0 1-1.425 1.402l-3.938-4.006a7.5 7.5 0 1 1 1.423-1.406zM10.5 16a5.5 5.5 0 1 0 0-11 5.5 5.5 0 0 0 0 11z" fill="currentColor" fill-rule="evenodd"></path></svg>
-                  </span>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
         <Table :columns="userColumns" :data="users" :loading="pageData.loading"></Table>
         <Page v-if="!pageData.loading && pageData.totalPages > 1" :total="pageData.totalRecords" :current="pageData.currentPage" @on-change="paginateAction" />
       </div>
@@ -116,11 +109,12 @@ export default {
       editGroupModal: false,
       deleteGroupModal: false,
       permissionGroupModal: false,
+      deleteUserModal: false,
       userColumns: [
         {
           title: 'Name',
           align: 'left',
-          width: 250,
+          sortable: true,
           render: (h, params) => {
             return h('span', params.row.first_name + ' ' + params.row.last_name)
           }
@@ -128,6 +122,7 @@ export default {
         {
           title: 'Email Address',
           align: 'left',
+          sortable: true,
           render: (h, params) => {
             return h('span', params.row.email)
           }
@@ -152,10 +147,16 @@ export default {
       },
       permissions: [],
       permissionsCheck: [],
-      slug: this.$route.params.slug
+      slug: this.$route.params.slug,
+      selectedUser: [],
+      userForm: {}
     }
   },
   methods: {
+    showDeleteStock (index) {
+      this.selectedUser = this.users[index]
+      this.deleteUserModal = true
+    },
     fetchUsers (offset) {
       this.pageData.loading = true
       let params = {
@@ -173,6 +174,7 @@ export default {
 
         this.users = data.results
         this.pageData.loading = false
+        console.log(this.users)
       }).catch((e) => {
         this.$notify({
           group: 'error',
@@ -180,6 +182,35 @@ export default {
           text: e.response.data.detail
         })
         this.pageData.loading = false
+      })
+    },
+    removeUser () {
+      this.userForm = this.selectedUser
+      this.userForm.groups = []
+      console.log(this.userForm)
+      this.api['viewUser'](this.selectedUser.id, 'put', null, this.userForm).then(res => {
+        // success
+        this.$notify({
+          group: 'success',
+          type: 'success',
+          text: 'User successfully removed'
+        })
+        this.formErrors = []
+        this.fetchUsers()
+      }).catch((e) => {
+        console.log(e.response)
+        this.formErrors = e.response.data
+        if (this.formErrors.detail) {
+          this.$notify({
+            group: 'error',
+            type: 'warning',
+            text: this.formErrors.detail
+          })
+        } else {
+          setTimeout(() => {
+            this.deleteUserModal = true
+          }, 0)
+        }
       })
     },
     paginateUsersAction (pageNumber) {

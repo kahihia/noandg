@@ -3,7 +3,7 @@ from rest_framework.exceptions import ValidationError
 from rest_framework.generics import get_object_or_404
 
 from apps.engineering.models import Project, ProjectFile, ProjectEquipment, ProjectBudget, ProjectBid, ProjectQuote, \
-    ProjectQuoteItem, ProjectDesign
+    ProjectQuoteItem, ProjectDesign, ProjectFabrication, ProjectStage
 from apps.users.serializers import UserSerializer
 from configs import BID_STATUS, QUOTE_STATUS
 
@@ -20,6 +20,12 @@ class ProjectSerializer(serializers.ModelSerializer):
 class CreateProjectSerializer(serializers.ModelSerializer):
     class Meta:
         model = Project
+        fields = "__all__"
+
+
+class ProjectStageSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ProjectStage
         fields = "__all__"
 
 
@@ -190,3 +196,18 @@ class CreateProjectQuoteItemSerializer(serializers.ModelSerializer):
             raise ValidationError('You are not allowed to edit your quote at this time.')
 
         return data
+
+
+class ProjectFabricationSerializer(serializers.ModelSerializer):
+    project = ProjectSerializer()
+    team = UserSerializer()
+
+    class Meta:
+        model = ProjectFabrication
+        fields = "__all__"
+
+
+class CreateProjectFabricationSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ProjectFabrication
+        fields = "__all__"

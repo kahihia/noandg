@@ -1,3 +1,5 @@
+from datetime import datetime, timedelta
+
 from django.contrib.auth.models import User
 from django.db.models import Q
 from rest_framework import viewsets
@@ -7,12 +9,14 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from apps.engineering.models import Project, ProjectFile, ProjectEquipment, ProjectBudget, ProjectBid, ProjectQuote, \
-    ProjectQuoteItem, ProjectDesign
+    ProjectQuoteItem, ProjectDesign, ProjectFabrication, ProjectStage
 from apps.engineering.serializers import CreateProjectSerializer, ProjectSerializer, CreateProjectFileSerializer, \
     ProjectFileSerializer, CreateProjectEquipmentSerializer, ProjectEquipmentSerializer, CreateProjectBudgetSerializer, \
     ProjectBudgetSerializer, ProjectBidSerializer, CreateProjectBidSerializer, CreateProjectQuoteSerializer, \
     ProjectQuoteSerializer, CreateProjectQuoteItemSerializer, ProjectQuoteItemSerializer, ProjectDesignSerializer, \
-    CreateProjectDesignSerializer
+    CreateProjectDesignSerializer, ProjectFabricationSerializer, CreateProjectFabricationSerializer, \
+    ProjectStageSerializer
+from configs import day_min, day_max, daterange
 
 
 class CreateProjectViewSet(viewsets.ModelViewSet):
@@ -32,8 +36,30 @@ class ProjectViewSet(viewsets.ModelViewSet):
         if self.request.GET.get('q'):
             return self.queryset.filter(
                 Q(name__icontains=self.request.GET.get('q')))
+        elif self.request.GET.get('start_date') and self.request.GET.get('end_date'):
+
+            start_date = datetime.strptime(self.request.GET.get('start_date'), '%Y-%m-%d')
+            end_date = datetime.strptime(self.request.GET.get('end_date'), '%Y-%m-%d')
+
+            return self.queryset.filter(
+                created_at__range=[day_min(start_date.strftime("%Y-%m-%d")), day_max(end_date.strftime("%Y-%m-%d"))])
         else:
             return self.queryset
+
+
+class ProjectStageViewSet(viewsets.ModelViewSet):
+    queryset = ProjectStage.objects.all()
+
+    def get_queryset(self):
+        if self.request.GET.get('project'):
+            project = get_object_or_404(Project, slug=self.request.GET.get('project'))
+            return ProjectStage.objects.filter(project=project)
+        else:
+            return self.queryset
+
+    serializer_class = ProjectStageSerializer
+    permission_classes = (IsAuthenticated, DjangoModelPermissions,)
+    lookup_field = 'slug'
 
 
 class ProjectLeadsViewSet(APIView):
@@ -120,6 +146,13 @@ class ProjectEquipmentViewSet(viewsets.ModelViewSet):
         if self.request.GET.get('q'):
             return self.queryset.filter(
                 Q(name__icontains=self.request.GET.get('q')))
+        elif self.request.GET.get('start_date') and self.request.GET.get('end_date'):
+
+            start_date = datetime.strptime(self.request.GET.get('start_date'), '%Y-%m-%d')
+            end_date = datetime.strptime(self.request.GET.get('end_date'), '%Y-%m-%d')
+
+            return self.queryset.filter(
+                created_at__range=[day_min(start_date.strftime("%Y-%m-%d")), day_max(end_date.strftime("%Y-%m-%d"))])
         else:
             return self.queryset
 
@@ -144,6 +177,13 @@ class ProjectBudgetViewSet(viewsets.ModelViewSet):
         if self.request.GET.get('q'):
             return self.queryset.filter(
                 Q(name__icontains=self.request.GET.get('q')))
+        elif self.request.GET.get('start_date') and self.request.GET.get('end_date'):
+
+            start_date = datetime.strptime(self.request.GET.get('start_date'), '%Y-%m-%d')
+            end_date = datetime.strptime(self.request.GET.get('end_date'), '%Y-%m-%d')
+
+            return self.queryset.filter(
+                created_at__range=[day_min(start_date.strftime("%Y-%m-%d")), day_max(end_date.strftime("%Y-%m-%d"))])
         else:
             return self.queryset
 
@@ -240,3 +280,68 @@ class CreateProjectQuoteItemViewSet(viewsets.ModelViewSet):
     serializer_class = CreateProjectQuoteItemSerializer
     permission_classes = (IsAuthenticated, DjangoModelPermissions,)
     lookup_field = 'slug'
+
+
+class ProjectFabricationViewSet(viewsets.ModelViewSet):
+    queryset = ProjectFabrication.objects.all()
+    serializer_class = ProjectFabricationSerializer
+    permission_classes = (IsAuthenticated, DjangoModelPermissions,)
+    lookup_field = 'slug'
+
+    def get_queryset(self):
+        project = get_object_or_404(Project, id=self.request.GET.get('project'))
+        self.queryset = self.queryset.filter(project=project)
+
+        if self.request.GET.get('e'):
+            return ProjectQuoteItem.objects.filter(vendor=self.request.user, project=project)
+        elif self.request.GET.get('item'):
+            if self.request.GET.get('item') == '':
+                return []
+            else:
+                equipment = get_object_or_404(ProjectEquipment, id=self.request.GET.get('item'))
+                return ProjectQuoteItem.objects.filter(project=project, equipment=equipment)
+        elif self.request.GET.get('vendor'):
+            vendor = get_object_or_404(User, id=self.request.GET.get('vendor'))
+            return ProjectQuoteItem.objects.filter(project=project, vendor=vendor)
+        else:
+            return self.queryset
+
+
+class CreateProjectFabricationViewSet(viewsets.ModelViewSet):
+    queryset = ProjectFabrication.objects.all()
+    serializer_class = CreateProjectFabricationSerializer
+    permission_classes = (IsAuthenticated, DjangoModelPermissions,)
+    lookup_field = 'slug'
+
+
+class ProjectTeamViewSet(APIView):
+    permission_classes = (IsAuthenticated,)
+
+    def get(self, request):
+        project = get_object_or_404(Project, id=self.request.GET.get('project'))
+        all_teams = project.members.all()
+
+        teams = []
+        for team in all_teams:
+            team_object = {'value': team.id,
+                           'label': team.first_name + ' ' + team.last_name}
+
+            # append groups
+            teams.append(team_object)
+
+        return Response({'results': teams})
+
+
+class ProjectFormViewSet(APIView):
+    permission_classes = (IsAuthenticated,)
+
+    def get(self, request):
+        projects = Project.objects.all()
+
+        projects_obj = []
+        for project in projects:
+            project_object = {'value': project.id, 'label': project.name}
+
+            projects_obj.append(project_object)
+
+        return Response({'results': projects_obj})

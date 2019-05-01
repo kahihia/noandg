@@ -1,8 +1,35 @@
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.shortcuts import render
 from django.views.generic import TemplateView
+from django.views.generic.base import View
 from rest_framework import pagination
 from rest_framework.authtoken.models import Token
 from rest_framework.authtoken.views import ObtainAuthToken
 from rest_framework.response import Response
+
+
+# Web view
+from apps.general.forms import UserForm
+
+
+class WebView(LoginRequiredMixin, View):
+    template_name = 'index.html'
+    context = {}
+
+    def get(self, request):
+        return render(request, self.template_name, self.context)
+
+
+# User settings
+class Settings(LoginRequiredMixin, View):
+    template_name = 'profile/settings.html'
+    context = {}
+
+    def get(self, request):
+        user_form = UserForm(instance=request.user)
+
+        self.context['user_form'] = user_form
+        return render(request, self.template_name, self.context)
 
 
 # Home view
