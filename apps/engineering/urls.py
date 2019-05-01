@@ -25,6 +25,26 @@ router.register(r'fabrications', views.ProjectFabricationViewSet)
 router.register(r'create/fabrication', views.CreateProjectFabricationViewSet)
 
 urlpatterns = [
+    path('engineering/directory/', views.ProjectsView.as_view(), name='projects_directory'),
+    path('engineering/project/<slug>/overview/', views.ProjectView.as_view(), name='project_overview'),
+    path('engineering/project/<slug>/documents/', views.ProjectFilesView.as_view(), name='project_documents'),
+    path('engineering/project/<slug>/documents/<file_slug>/delete/', views.ProjectFileDeleteView.as_view(),
+         name='project_document_delete'),
+    path('engineering/project/<slug>/designs/', views.ProjectDesignsView.as_view(), name='project_designs'),
+    path('engineering/project/<slug>/designs/<file_slug>/delete/', views.ProjectDesignDeleteView.as_view(),
+         name='project_design_delete'),
+    path('engineering/project/<slug>/equipments/', views.ProjectEquipmentsView.as_view(), name='project_equipments'),
+    path('engineering/project/<slug>/equipments/<file_slug>/delete/', views.ProjectEquipmentDeleteView.as_view(),
+         name='project_equipment_delete'),
+    path('engineering/project/<slug>/equipments/<equipment_slug>/edit/', views.ProjectEquipmentView.as_view(),
+         name='project_equipment_edit'),
+    path('engineering/project/<slug>/bidding/', views.ProjectBiddingView.as_view(), name='project_bidding'),
+    path('engineering/project/<slug>/bidding/status/', views.ProjectBiddingEditView.as_view(),
+         name='project_bidding_status'),
+    path('engineering/project/<slug>/bidding/status/<bid_slug>/<bid_action>/', views.ProjectBidStatusView.as_view(),
+         name='project_bid_status'),
+    path('engineering/project/<slug>/quotation/', views.ProjectQuotationView.as_view(), name='project_quotation'),
+
     path('api/v1/engineering/forms/leads/', views.ProjectLeadsViewSet.as_view()),
     path('api/v1/engineering/forms/teams/', views.ProjectTeamViewSet.as_view()),
     path('api/v1/engineering/forms/equipments/', views.ProjectEquipmentsViewSet.as_view()),

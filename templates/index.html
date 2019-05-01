@@ -319,20 +319,13 @@
                         <!-- .menu-header -->
                         <li class="menu-header">More</li><!-- /.menu-header -->
 
+
                         <!-- .menu-item -->
-                        <li class="menu-item {% if '/home/' in request.path %}has-active{% endif %} has-child">
-                            <a href="#" class="menu-link">
+                        <li class="menu-item {% if '/engineering/' in request.path %}has-active{% endif %}">
+                            <a href="{% url 'projects_directory' %}" class="menu-link">
                                 <span class="menu-icon oi oi-droplet"></span>
-                                <span class="menu-text">Engineering</span></a> <!-- child menu -->
-                            <ul class="menu">
-                                <li class="menu-item">
-                                    <a href="{% url 'home' %}"
-                                       class="menu-link {% if '/home/directory/' in request.path %}has-active{% endif %}">Directory</a>
-                                </li>
-                                <li class="menu-item">
-                                    <a href="" class="menu-link">Categories</a>
-                                </li>
-                            </ul><!-- /child menu -->
+                                <span class="menu-text">Engineering</span>
+                            </a>
                         </li><!-- /.menu-item -->
 
                         <!-- .menu-item -->
@@ -425,6 +418,20 @@
             <!-- .page -->
             <div class="page">
 
+                <!-- .page-message -->
+                {% if messages %}
+                    <div class="page-message" role="alert">
+                        {% for message in messages %}
+                            <i class="oi oi-info"></i>
+                            {{ message|safe }}
+                        {% endfor %}
+                        <a href="#" class="btn btn-sm btn-icon btn-warning ml-1"
+                           aria-label="Close" onclick="$(this).parent().fadeOut()"><span aria-hidden="true"><i
+                                class="fa fa-times"></i></span></a>
+                    </div>
+                {% endif %}
+                <!-- /.page-message -->
+
                 {% block content %}
 
                     <!-- .page-inner -->
@@ -512,7 +519,7 @@
 
         <!-- .app-footer -->
         <footer class="app-footer">
-            <ul class="list-inline">
+            <ul class="list-inline d-none">
                 <li class="list-inline-item">
                     <a class="text-muted" href="#">Support</a>
                 </li>
@@ -526,7 +533,8 @@
                     <a class="text-muted" href="#">Terms of Service</a>
                 </li>
             </ul>
-            <div class="copyright"> Copyright © 2019. All right reserved.</div>
+            <div class="copyright"> Copyright © 2019. All right reserved. Designed by <a href="">Bluewave
+                International</a></div>
         </footer><!-- /.app-footer -->
 
         <!-- /.wrapper -->

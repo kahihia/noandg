@@ -20,6 +20,7 @@ class UsersView(LoginRequiredMixin, View):
     context = {}
 
     def get(self, request):
+        self.context['users'] = User.objects.all()
         return render(request, self.template_name, self.context)
 
 

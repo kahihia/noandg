@@ -1,5 +1,8 @@
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.models import User
 from django.db.models import Q
+from django.shortcuts import render
+from django.views.generic.base import View
 from rest_framework import viewsets
 from rest_framework.generics import get_object_or_404
 from rest_framework.permissions import IsAuthenticated, DjangoModelPermissions
@@ -11,6 +14,15 @@ from apps.engineering.serializers import CreateProjectSerializer, ProjectSeriali
 from apps.logistics.models import LogisticsBid, LogisticsQuote, LogisticsQuoteItem
 from apps.logistics.serializers import CreateProjectBidSerializer, ProjectBidSerializer, CreateProjectQuoteSerializer, \
     ProjectQuoteSerializer, ProjectQuoteItemSerializer, CreateProjectQuoteItemSerializer
+
+
+class UsersView(LoginRequiredMixin, View):
+    template_name = 'users/index.html'
+    context = {}
+
+    def get(self, request):
+        self.context['users'] = User.objects.all()
+        return render(request, self.template_name, self.context)
 
 
 class CreateProjectViewSet(viewsets.ModelViewSet):

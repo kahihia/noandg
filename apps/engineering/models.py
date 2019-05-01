@@ -8,8 +8,8 @@ class Project(models.Model):
     name = models.CharField(max_length=255, unique=True)
     lead = models.ForeignKey(User, on_delete=models.SET(1))
     description = models.TextField()
-    owner_name = models.CharField(max_length=255)
-    owner_email = models.EmailField(max_length=55)
+    owner_name = models.CharField(max_length=255, null=True, blank=True)
+    owner_email = models.EmailField(max_length=55, null=True, blank=True)
     bidding = models.BooleanField(default=False, blank=True)
     logistics_bidding = models.BooleanField(default=False, blank=True)
     members = models.ManyToManyField(User, related_name='project_member', blank=True)
@@ -53,7 +53,7 @@ class ProjectStage(models.Model):
 
 class ProjectFile(models.Model):
     project = models.ForeignKey(Project, on_delete=models.CASCADE)
-    name = models.TextField()
+    name = models.CharField(max_length=255)
     description = models.TextField()
     document = models.FileField(upload_to='documents')
     slug = models.SlugField(null=True, db_index=True, blank=True)
@@ -74,7 +74,7 @@ class ProjectFile(models.Model):
 
 class ProjectDesign(models.Model):
     project = models.ForeignKey(Project, on_delete=models.CASCADE)
-    name = models.TextField()
+    name = models.CharField(max_length=255)
     description = models.TextField()
     document = models.FileField(upload_to='designs')
     design_type = models.CharField(max_length=68, choices=DESIGN_TYPE, blank=False, default='FEED')
