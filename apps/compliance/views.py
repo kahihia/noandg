@@ -1,10 +1,94 @@
+from django.contrib import messages
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.shortcuts import render, redirect
+from django.urls import reverse
+from django.views.generic.base import View
 from rest_framework import viewsets
 from rest_framework.generics import get_object_or_404
 from rest_framework.permissions import IsAuthenticated, DjangoModelPermissions
 
+from apps.compliance.forms import SurveyForm, SurveyQuestionForm
 from apps.compliance.models import Survey, SurveyQuestion, SurveyQuestionAnswer, HelpIssue
 from apps.compliance.serializers import SurveySerializer, CreateSurveySerializer, SurveyQuestionSerializer, \
     SurveyQuestionAnswerSerializer, CreateSurveyQuestionAnswerSerializer, HelpSerializer, CreateHelpSerializer
+from apps.engineering.models import Project
+
+
+class SurveysView(LoginRequiredMixin, View):
+    template_name = 'compliance/index.html'
+    context = {}
+
+    def get(self, request):
+        self.context['surveys'] = Survey.objects.all()
+        self.context['form'] = SurveyForm
+
+        return render(request, self.template_name, self.context)
+
+    def post(self, request):
+        survey_form = SurveyForm(request.POST)
+
+        if survey_form.is_valid():
+            survey = survey_form.save(commit=True)
+            messages.success(request, 'Survey successfully created.')
+            return redirect(reverse('surveys_directory'))
+
+        else:
+            messages.warning(request, survey_form.errors)
+            self.context['form'] = survey_form
+            return render(request, self.template_name, self.context)
+
+
+class SurveyView(LoginRequiredMixin, View):
+    template_name = 'compliance/edit.html'
+    context = {}
+
+    def get(self, request, *args, **kwargs):
+        survey = get_object_or_404(Survey, slug=kwargs['slug'])
+        self.context['survey'] = survey
+        self.context['form'] = SurveyForm(instance=survey)
+        self.context['question_form'] = SurveyQuestionForm
+        self.context['survey_questions'] = SurveyQuestion.objects.filter(survey=survey)
+
+        return render(request, self.template_name, self.context)
+
+    def post(self, request, *args, **kwargs):
+        survey = get_object_or_404(Survey, slug=kwargs['slug'])
+        survey_form = SurveyForm(request.POST, instance=survey)
+
+        if survey_form.is_valid():
+            survey = survey_form.save()
+            messages.success(request, 'Survey successfully updated.')
+            return redirect(reverse('survey_overview', kwargs={'slug': survey.slug}))
+
+        else:
+            messages.warning(request, survey_form.errors)
+            self.context['form'] = survey_form
+            return render(request, self.template_name, self.context)
+
+
+class SurveyDeleteView(LoginRequiredMixin, View):
+    context = {}
+
+    def get(self, request, *args, **kwargs):
+        survey = get_object_or_404(Survey, slug=kwargs['slug'])
+        survey.delete()
+
+        messages.success(request, 'Survey deleted successfully.')
+
+        return redirect(reverse('surveys_directory'))
+
+
+class SurveyQuestionDeleteView(LoginRequiredMixin, View):
+    context = {}
+
+    def get(self, request, *args, **kwargs):
+        survey = get_object_or_404(Survey, slug=kwargs['slug'])
+        survey_question = get_object_or_404(SurveyQuestion, slug=kwargs['question_slug'])
+        survey_question.delete()
+
+        messages.success(request, 'Survey question deleted successfully.')
+
+        return redirect(reverse('survey_overview', kwargs={'slug': survey.slug}))
 
 
 class SurveyViewSet(viewsets.ModelViewSet):

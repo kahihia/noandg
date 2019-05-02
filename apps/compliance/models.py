@@ -7,7 +7,7 @@ from configs import random_code, SURVEY_TYPE, QUESTION_TYPE
 
 class Survey(models.Model):
     name = models.CharField(max_length=55, unique=True)
-    survey_type = models.CharField(max_length=68, blank=False, default='Shipping')
+    survey_type = models.CharField(max_length=68, choices=SURVEY_TYPE, blank=False, default='Shipping')
     project = models.ForeignKey(Project, on_delete=models.CASCADE)
     slug = models.SlugField(null=True, db_index=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)

@@ -329,51 +329,20 @@
                         </li><!-- /.menu-item -->
 
                         <!-- .menu-item -->
-                        <li class="menu-item {% if '/home/' in request.path %}has-active{% endif %} has-child">
-                            <a href="#" class="menu-link">
+                        <li class="menu-item {% if '/logistics/' in request.path %}has-active{% endif %}">
+                            <a href="{% url 'logistics_directory' %}" class="menu-link">
                                 <span class="menu-icon oi oi-globe"></span>
-                                <span class="menu-text">Logistics</span></a> <!-- child menu -->
-                            <ul class="menu">
-                                <li class="menu-item">
-                                    <a href="{% url 'home' %}"
-                                       class="menu-link {% if '/home/directory/' in request.path %}has-active{% endif %}">Directory</a>
-                                </li>
-                                <li class="menu-item">
-                                    <a href="" class="menu-link">Categories</a>
-                                </li>
-                            </ul><!-- /child menu -->
+                                <span class="menu-text">Logistics</span>
+                            </a>
                         </li><!-- /.menu-item -->
 
+
                         <!-- .menu-item -->
-                        <li class="menu-item {% if '/home/' in request.path %}has-active{% endif %} has-child">
-                            <a href="#" class="menu-link">
+                        <li class="menu-item {% if '/compliance/' in request.path %}has-active{% endif %}">
+                            <a href="{% url 'surveys_directory' %}" class="menu-link">
                                 <span class="menu-icon oi oi-warning"></span>
-                                <span class="menu-text">Compliance</span></a> <!-- child menu -->
-                            <ul class="menu">
-                                <li class="menu-item">
-                                    <a href="{% url 'home' %}"
-                                       class="menu-link {% if '/home/directory/' in request.path %}has-active{% endif %}">Directory</a>
-                                </li>
-                                <li class="menu-item">
-                                    <a href="" class="menu-link">Categories</a>
-                                </li>
-                            </ul><!-- /child menu -->
-                        </li><!-- /.menu-item -->
-
-                        <!-- .menu-item -->
-                        <li class="menu-item {% if '/home/' in request.path %}has-active{% endif %} has-child">
-                            <a href="#" class="menu-link">
-                                <span class="menu-icon oi oi-wrench"></span>
-                                <span class="menu-text">Construction</span></a> <!-- child menu -->
-                            <ul class="menu">
-                                <li class="menu-item">
-                                    <a href="{% url 'home' %}"
-                                       class="menu-link {% if '/home/directory/' in request.path %}has-active{% endif %}">Directory</a>
-                                </li>
-                                <li class="menu-item">
-                                    <a href="" class="menu-link">Categories</a>
-                                </li>
-                            </ul><!-- /child menu -->
+                                <span class="menu-text">Compliance</span>
+                            </a>
                         </li><!-- /.menu-item -->
 
                         <!-- .menu-item -->

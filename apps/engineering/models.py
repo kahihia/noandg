@@ -213,6 +213,7 @@ class ProjectFabrication(models.Model):
     team = models.ForeignKey(User, on_delete=models.CASCADE)
     description = models.TextField()
     fabrication_status = models.CharField(max_length=68, choices=FABRICATION_STATUS, blank=False, default='Ongoing')
+    due_date = models.DateField()
     slug = models.SlugField(null=True, db_index=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)

@@ -24,7 +24,7 @@
                 </div>
             </a> <!-- /btn-account -->
             <!-- right actions -->
-            <div class="ml-auto">
+            <div class="ml-auto hidden">
                 <!-- invite members -->
                 <div class="dropdown d-inline-block">
                     <button type="button" class="btn btn-light btn-icon" title="Invite members" data-toggle="dropdown"
@@ -62,9 +62,7 @@
                     <!-- grid column -->
                     <div class="col">
                         <h1 class="page-title"> {{ project.name|capfirst }} </h1>
-                        <p>{{ project.description|capfirst|slice:":180" }}... <a href="#" data-toggle="modal"
-                                                                                 data-target="#editProject"><span
-                                class="ml-1">Edit Project</span> </a></p>
+                        <p>{{ project.description|capfirst|slice:":180" }}...</p>
 
                         <!-- Modal Drawer Right -->
                         <div class="modal modal-drawer fade" id="editProject" tabindex="-1" role="dialog"
@@ -114,19 +112,11 @@
                     <!-- .nav -->
                     <div class="nav nav-tabs">
                         <a class="nav-link {% if '/overview/' in request.path %}active{% endif %}"
-                           href="{% url 'project_overview' project.slug %}">Overview</a>
-                        <a class="nav-link {% if '/documents/' in request.path %}active{% endif %}"
-                           href="{% url 'project_documents' project.slug %}">Documents</a>
-                        <a class="nav-link {% if '/designs/' in request.path %}active{% endif %}"
-                           href="{% url 'project_designs' project.slug %}">Designs</a>
-                        <a class="nav-link {% if '/equipments/' in request.path %}active{% endif %}"
-                           href="{% url 'project_equipments' project.slug %}">Equipments</a>
+                           href="{% url 'logistic_overview' project.slug %}">Overview</a>
                         <a class="nav-link {% if '/bidding/' in request.path %}active{% endif %}"
-                           href="{% url 'project_bidding' project.slug %}">Biding</a>
+                           href="{% url 'logistic_bidding' project.slug %}">Biding</a>
                         <a class="nav-link {% if '/quotation/' in request.path %}active{% endif %}"
-                           href="{% url 'project_quotation' project.slug %}">Quotation</a>
-                        <a class="nav-link {% if '/fabrication/' in request.path %}active{% endif %}"
-                           href="{% url 'project_fabrication' project.slug %}">Fabrication</a>
+                           href="{% url 'logistic_quotation' project.slug %}">Quotation</a>
                     </div><!-- /.nav -->
                 </div><!-- /.nav-scroller -->
             </header><!-- /.page-title-bar -->

@@ -1,4 +1,4 @@
-{% extends 'engineering/project.html' %}
+{% extends 'logistics/project.html' %}
 
 {% load static %}
 
@@ -29,7 +29,7 @@
 
             <h5>Quotation</h5>
 
-            <form class="ml-auto" method="post" action="{% url 'project_quotation' project.slug %}">
+            <form class="ml-auto" method="post" action="{% url 'logistic_quotation' project.slug %}">
                 {% csrf_token %}
                 <button type="submit" class="btn btn-primary">
                     Request for quotation
@@ -88,7 +88,7 @@
                                 </td>
                                 <td class="align-middle text-right">
                                     {% if project_equipment.quote_status != 'Accepted' or project_equipment.quote_status == 'Open' %}
-                                        <a href="{% url 'project_quotation_status' project.slug project_equipment.slug 'accept' %}"
+                                        <a href="{% url 'logistic_quotation_status' project.slug project_equipment.slug 'accept' %}"
                                            class="btn btn-sm btn-icon btn-secondary"><i
                                                 class="oi oi-check"></i>
                                             <span class="sr-only">Accept</span></a>
@@ -96,13 +96,13 @@
 
 
                                     {% if project_equipment.quote_status != 'Denied' or project_equipment.quote_status == 'Open' %}
-                                        <a href="{% url 'project_quotation_status' project.slug project_equipment.slug 'deny' %}"
+                                        <a href="{% url 'logistic_quotation_status' project.slug project_equipment.slug 'deny' %}"
                                            class="btn btn-sm btn-icon btn-warning"><i
                                                 class="oi oi-x"></i>
                                             <span class="sr-only">Deny</span></a>
                                     {% endif %}
 
-                                    <a href="{% url 'project_quotation_status' project.slug project_equipment.slug 'delete' %}"
+                                    <a href="{% url 'logistic_quotation_status' project.slug project_equipment.slug 'delete' %}"
                                        class="btn btn-sm btn-icon btn-danger"><i
                                             class="far fa-trash-alt"></i> <span
                                             class="sr-only">Remove</span></a>
@@ -118,7 +118,7 @@
                                     <div class="modal modal-drawer fade" id="newDocument" tabindex="-1" role="dialog"
                                          aria-labelledby="newDocumentLabel" aria-hidden="true">
                                         <!-- .modal-dialog -->
-                                        <form action="{% url 'project_quotation_edit' project.slug project_equipment.slug %}"
+                                        <form action="{% url 'logistic_quotation_edit' project.slug project_equipment.slug %}"
                                               enctype="multipart/form-data" method="post"
                                               class="modal-dialog modal-drawer-right" role="document">
                                             {% csrf_token %}

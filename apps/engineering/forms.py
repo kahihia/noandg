@@ -1,6 +1,7 @@
 from django import forms
 
-from apps.engineering.models import Project, ProjectFile, ProjectDesign, ProjectEquipment
+from apps.engineering.models import Project, ProjectFile, ProjectDesign, ProjectEquipment, ProjectQuoteItem, \
+    ProjectFabrication
 
 
 class ProjectForm(forms.ModelForm):
@@ -43,5 +44,29 @@ class ProjectEquipmentForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         super(ProjectEquipmentForm, self).__init__(*args, **kwargs)
+        for visible in self.visible_fields():
+            visible.field.widget.attrs['class'] = 'form-control'
+
+
+class ProjectQuoteItemForm(forms.ModelForm):
+    class Meta:
+        model = ProjectQuoteItem
+        exclude = ('project', 'quote', 'vendor', 'equipment', 'quote_status', 'quote_price', 'slug')
+
+    def __init__(self, *args, **kwargs):
+        super(ProjectQuoteItemForm, self).__init__(*args, **kwargs)
+        for visible in self.visible_fields():
+            visible.field.widget.attrs['class'] = 'form-control'
+
+
+class ProjectFabricationForm(forms.ModelForm):
+    due_date = forms.DateField(widget=forms.TextInput(attrs={'id': 'flatpickr01', 'data-toggle': 'flatpickr'}))
+
+    class Meta:
+        model = ProjectFabrication
+        exclude = ('project', 'slug')
+
+    def __init__(self, *args, **kwargs):
+        super(ProjectFabricationForm, self).__init__(*args, **kwargs)
         for visible in self.visible_fields():
             visible.field.widget.attrs['class'] = 'form-control'

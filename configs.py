@@ -10,7 +10,7 @@ DESIGN_TYPE = (('FEED', 'FEED'), ('HAZOP', 'HAZOP'), ('MODELING', 'MODELING'))
 
 FABRICATION_STATUS = (('Ongoing', 'Ongoing'), ('Canceled', 'Canceled'), ('Complete', 'Complete'))
 
-SURVEY_TYPE = (('Shipping', 'Shipping'), ('Fabrication', 'Fabrication'))
+SURVEY_TYPE = (('Shipping', 'Shipping'), ('Fabrication', 'Fabrication'), ('Construction', 'Construction'))
 
 QUESTION_TYPE = (('1', 'Yes/No'), ('2', 'Numerical'), ('3', 'Open Ended'))
 

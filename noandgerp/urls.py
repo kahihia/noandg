@@ -26,8 +26,8 @@ urlpatterns = [
     path('', include('apps.general.urls')),
     path('', include('apps.users.urls')),
     path('', include('apps.engineering.urls')),
-    # path('', include('apps.logistics.urls')),
-    # path('', include('apps.compliance.urls')),
+    path('', include('apps.logistics.urls')),
+    path('', include('apps.compliance.urls')),
     # path('', include('apps.warehouse.urls')),
     # path('', include('apps.construction.urls')),
 ]
@@ -35,4 +35,4 @@ urlpatterns = [
 if settings.DEBUG:
     urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
-handler404 = TemplateView.as_view(template_name='index.html')
+# handler404 = TemplateView.as_view(template_name='index.html')

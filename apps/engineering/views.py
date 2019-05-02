@@ -13,7 +13,8 @@ from rest_framework.permissions import IsAuthenticated, DjangoModelPermissions
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from apps.engineering.forms import ProjectForm, ProjectFileForm, ProjectDesignForm, ProjectEquipmentForm
+from apps.engineering.forms import ProjectForm, ProjectFileForm, ProjectDesignForm, ProjectEquipmentForm, \
+    ProjectFabricationForm
 from apps.engineering.models import Project, ProjectFile, ProjectEquipment, ProjectBudget, ProjectBid, ProjectQuote, \
     ProjectQuoteItem, ProjectDesign, ProjectFabrication, ProjectStage
 from apps.engineering.serializers import CreateProjectSerializer, ProjectSerializer, CreateProjectFileSerializer, \
@@ -22,7 +23,7 @@ from apps.engineering.serializers import CreateProjectSerializer, ProjectSeriali
     ProjectQuoteSerializer, CreateProjectQuoteItemSerializer, ProjectQuoteItemSerializer, ProjectDesignSerializer, \
     CreateProjectDesignSerializer, ProjectFabricationSerializer, CreateProjectFabricationSerializer, \
     ProjectStageSerializer
-from configs import day_min, day_max, daterange
+from configs import day_min, day_max, daterange, BID_STATUS
 
 
 class ProjectsView(LoginRequiredMixin, View):
@@ -332,19 +333,133 @@ class ProjectQuotationView(LoginRequiredMixin, View):
         self.context['project'] = project
         self.context['bid_placed'] = bid_placed
         self.context['bid'] = bid
-        self.context['project_equipments'] = ProjectEquipment.objects.filter(project=project)
+        self.context['project_equipments'] = ProjectQuoteItem.objects.filter(project=project)
 
         return render(request, self.template_name, self.context)
 
     def post(self, request, *args, **kwargs):
         project = get_object_or_404(Project, slug=kwargs['slug'])
-        project_bid = ProjectBid()
-        project_bid.project = project
-        project_bid.vendor = request.user
-        project_bid.save()
 
-        messages.success(request, 'Bid successfully submitted.')
-        return redirect(reverse('project_bidding', kwargs={'slug': project.slug}))
+        project_bids = ProjectBid.objects.filter(project=project, bid_status=BID_STATUS[1][0])
+
+        if ProjectQuote.objects.filter(project=project).exists():
+            quote = ProjectQuote.objects.get(project=project)
+        else:
+            quote = ProjectQuote()
+            quote.project = project
+            quote.save()
+
+        for project_bid in project_bids:
+            equipments = ProjectEquipment.objects.filter(project=project)
+
+            for equipment in equipments:
+                if not ProjectQuoteItem.objects.filter(project=project, vendor=project_bid.vendor).exists():
+                    quote_item = ProjectQuoteItem()
+                    quote_item.project = project
+                    quote_item.quote = quote
+                    quote_item.vendor = project_bid.vendor
+                    quote_item.equipment = equipment
+                    quote_item.save()
+
+        messages.success(request, 'Request for quotation successfully updated.')
+        return redirect(reverse('project_quotation', kwargs={'slug': project.slug}))
+
+
+class ProjectQuotationItemNewView(LoginRequiredMixin, View):
+    context = {}
+
+    def post(self, request, *args, **kwargs):
+        project = get_object_or_404(Project, slug=kwargs['slug'])
+        quote_item = get_object_or_404(ProjectQuoteItem, slug=kwargs['quote_item_slug'])
+
+        price = request.POST.get('price')
+
+        quote_item.project = project
+        quote_item.quote_price = price
+        quote_item.save()
+
+        messages.success(request, 'Quote updated successfully.')
+
+        return redirect(reverse('project_quotation', kwargs={'slug': project.slug}))
+
+
+class ProjectQuotationItemStatusView(LoginRequiredMixin, View):
+    context = {}
+
+    def get(self, request, *args, **kwargs):
+        project = get_object_or_404(Project, slug=kwargs['slug'])
+        quote_item = get_object_or_404(ProjectQuoteItem, slug=kwargs['quote_item_slug'])
+        quote_item_action = kwargs['quote_item_action']
+
+        if quote_item_action == 'accept':
+            quote_item.quote_status = 'Accepted'
+            quote_item.save()
+            messages.success(request, 'Quote status updated successfully.')
+        elif quote_item_action == 'deny':
+            quote_item.quote_status = 'Denied'
+            quote_item.save()
+            messages.success(request, 'Quote status updated successfully.')
+        elif quote_item_action == 'delete':
+            quote_item.delete()
+            messages.success(request, 'Quote deleted successfully.')
+        else:
+            return redirect(reverse('project_quotation', kwargs={'slug': project.slug}))
+
+        return redirect(reverse('project_quotation', kwargs={'slug': project.slug}))
+
+
+class ProjectFabricationView(LoginRequiredMixin, View):
+    template_name = 'engineering/fabrication/index.html'
+    context = {}
+
+    def get(self, request, *args, **kwargs):
+        project = get_object_or_404(Project, slug=kwargs['slug'])
+        project_tasks = ProjectFabrication.objects.filter(project=project)
+        project_fabrication_form = ProjectFabricationForm
+
+        self.context['project'] = project
+        self.context['project_tasks'] = project_tasks
+        self.context['form'] = project_fabrication_form
+
+        return render(request, self.template_name, self.context)
+
+    def post(self, request, *args, **kwargs):
+        project = get_object_or_404(Project, slug=kwargs['slug'])
+        project_fabrication_form = ProjectFabricationForm(request.POST)
+
+        if project_fabrication_form.is_valid():
+            project_data = project_fabrication_form.save(commit=False)
+            project_data.project = project
+            project_data.save()
+
+            messages.success(request, 'Task successfully created.')
+            return redirect(reverse('project_fabrication', kwargs={'slug': project.slug}))
+
+        else:
+            messages.warning(request, project_fabrication_form.errors)
+            self.context['form'] = project_fabrication_form
+            return render(request, self.template_name, self.context)
+
+
+class ProjectFabricationStatusView(LoginRequiredMixin, View):
+    context = {}
+
+    def get(self, request, *args, **kwargs):
+        project = get_object_or_404(Project, slug=kwargs['slug'])
+        fabrication = get_object_or_404(ProjectFabrication, slug=kwargs['fabrication_slug'])
+        fabrication_action = kwargs['fabrication_action']
+
+        if fabrication_action == 'accept':
+            pass
+        elif fabrication_action == 'deny':
+            pass
+        elif fabrication_action == 'delete':
+            fabrication.delete()
+            messages.success(request, 'Task deleted successfully.')
+        else:
+            return redirect(reverse('project_fabrication', kwargs={'slug': project.slug}))
+
+        return redirect(reverse('project_fabrication', kwargs={'slug': project.slug}))
 
 
 class CreateProjectViewSet(viewsets.ModelViewSet):

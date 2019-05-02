@@ -1,7 +1,9 @@
+from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.models import User
 from django.db.models import Q
-from django.shortcuts import render
+from django.shortcuts import render, redirect
+from django.urls import reverse
 from django.views.generic.base import View
 from rest_framework import viewsets
 from rest_framework.generics import get_object_or_404
@@ -14,6 +16,183 @@ from apps.engineering.serializers import CreateProjectSerializer, ProjectSeriali
 from apps.logistics.models import LogisticsBid, LogisticsQuote, LogisticsQuoteItem
 from apps.logistics.serializers import CreateProjectBidSerializer, ProjectBidSerializer, CreateProjectQuoteSerializer, \
     ProjectQuoteSerializer, ProjectQuoteItemSerializer, CreateProjectQuoteItemSerializer
+from configs import BID_STATUS
+
+
+class LogisticsView(LoginRequiredMixin, View):
+    template_name = 'logistics/index.html'
+    context = {}
+
+    def get(self, request):
+        self.context['projects'] = Project.objects.all()
+
+        return render(request, self.template_name, self.context)
+
+
+class LogisticView(LoginRequiredMixin, View):
+    template_name = 'logistics/project.html'
+    context = {}
+
+    def get(self, request, *args, **kwargs):
+        project = get_object_or_404(Project, slug=kwargs['slug'])
+
+        self.context['project'] = project
+
+        return render(request, self.template_name, self.context)
+
+
+class LogisticsBiddingView(LoginRequiredMixin, View):
+    template_name = 'logistics/bidding/index.html'
+    context = {}
+
+    def get(self, request, *args, **kwargs):
+        project = get_object_or_404(Project, slug=kwargs['slug'])
+        project_bids = LogisticsBid.objects.filter(project=project)
+
+        self.context['project'] = project
+        self.context['project_bids'] = project_bids
+
+        return render(request, self.template_name, self.context)
+
+    def post(self, request, *args, **kwargs):
+        project = get_object_or_404(Project, slug=kwargs['slug'])
+        project_bid = LogisticsBid()
+        project_bid.project = project
+        project_bid.vendor = request.user
+        project_bid.save()
+
+        messages.success(request, 'Bid successfully submitted.')
+        return redirect(reverse('logistic_bidding', kwargs={'slug': project.slug}))
+
+
+class LogisticsBiddingEditView(LoginRequiredMixin, View):
+    context = {}
+
+    def get(self, request, *args, **kwargs):
+        project = get_object_or_404(Project, slug=kwargs['slug'])
+        project.logistics_bidding = not project.logistics_bidding
+        project.save()
+
+        messages.success(request, 'Project logistics bidding updated successfully.')
+
+        return redirect(reverse('logistic_bidding', kwargs={'slug': project.slug}))
+
+
+class LogisticsBidStatusView(LoginRequiredMixin, View):
+    context = {}
+
+    def get(self, request, *args, **kwargs):
+        project = get_object_or_404(Project, slug=kwargs['slug'])
+        bid = get_object_or_404(LogisticsBid, slug=kwargs['bid_slug'])
+        bid_action = kwargs['bid_action']
+
+        if bid_action == 'accept':
+            bid.bid_status = 'Accepted'
+            bid.save()
+            messages.success(request, 'Bid status updated successfully.')
+        elif bid_action == 'deny':
+            bid.bid_status = 'Denied'
+            bid.save()
+            messages.success(request, 'Bid status updated successfully.')
+        elif bid_action == 'delete':
+            bid.delete()
+            messages.success(request, 'Bid deleted successfully.')
+        else:
+            return redirect(reverse('logistics_bidding', kwargs={'slug': project.slug}))
+
+        return redirect(reverse('logistic_bidding', kwargs={'slug': project.slug}))
+
+
+class LogisticsQuotationView(LoginRequiredMixin, View):
+    template_name = 'logistics/quotation/index.html'
+    context = {}
+
+    def get(self, request, *args, **kwargs):
+        project = get_object_or_404(Project, slug=kwargs['slug'])
+        project_bid = LogisticsBid.objects.filter(project=project, vendor=request.user)
+        if project_bid.exists():
+            bid_placed = True
+            bid = LogisticsBid.objects.get(project=project, vendor=request.user)
+        else:
+            bid_placed = False
+            bid = []
+
+        self.context['project'] = project
+        self.context['bid_placed'] = bid_placed
+        self.context['bid'] = bid
+        self.context['project_equipments'] = LogisticsQuoteItem.objects.filter(project=project)
+
+        return render(request, self.template_name, self.context)
+
+    def post(self, request, *args, **kwargs):
+        project = get_object_or_404(Project, slug=kwargs['slug'])
+
+        project_bids = LogisticsBid.objects.filter(project=project, bid_status=BID_STATUS[1][0])
+
+        if LogisticsQuote.objects.filter(project=project).exists():
+            quote = LogisticsQuote.objects.get(project=project)
+        else:
+            quote = LogisticsQuote()
+            quote.project = project
+            quote.save()
+
+        for project_bid in project_bids:
+            equipments = ProjectEquipment.objects.filter(project=project)
+
+            for equipment in equipments:
+                if not LogisticsQuoteItem.objects.filter(project=project, vendor=project_bid.vendor).exists():
+                    quote_item = LogisticsQuoteItem()
+                    quote_item.project = project
+                    quote_item.quote = quote
+                    quote_item.vendor = project_bid.vendor
+                    quote_item.equipment = equipment
+                    quote_item.save()
+
+        messages.success(request, 'Request for quotation successfully updated.')
+        return redirect(reverse('logistic_quotation', kwargs={'slug': project.slug}))
+
+
+class LogisticsQuotationItemNewView(LoginRequiredMixin, View):
+    context = {}
+
+    def post(self, request, *args, **kwargs):
+        project = get_object_or_404(Project, slug=kwargs['slug'])
+        quote_item = get_object_or_404(LogisticsQuoteItem, slug=kwargs['quote_item_slug'])
+
+        price = request.POST.get('price')
+
+        quote_item.project = project
+        quote_item.quote_price = price
+        quote_item.save()
+
+        messages.success(request, 'Quote updated successfully.')
+
+        return redirect(reverse('logistic_quotation', kwargs={'slug': project.slug}))
+
+
+class LogisticsQuotationItemStatusView(LoginRequiredMixin, View):
+    context = {}
+
+    def get(self, request, *args, **kwargs):
+        project = get_object_or_404(Project, slug=kwargs['slug'])
+        quote_item = get_object_or_404(LogisticsQuoteItem, slug=kwargs['quote_item_slug'])
+        quote_item_action = kwargs['quote_item_action']
+
+        if quote_item_action == 'accept':
+            quote_item.quote_status = 'Accepted'
+            quote_item.save()
+            messages.success(request, 'Quote status updated successfully.')
+        elif quote_item_action == 'deny':
+            quote_item.quote_status = 'Denied'
+            quote_item.save()
+            messages.success(request, 'Quote status updated successfully.')
+        elif quote_item_action == 'delete':
+            quote_item.delete()
+            messages.success(request, 'Quote deleted successfully.')
+        else:
+            return redirect(reverse('logistic_quotation', kwargs={'slug': project.slug}))
+
+        return redirect(reverse('logistic_quotation', kwargs={'slug': project.slug}))
 
 
 class UsersView(LoginRequiredMixin, View):
