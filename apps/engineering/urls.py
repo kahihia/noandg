@@ -50,6 +50,8 @@ urlpatterns = [
          views.ProjectQuotationItemStatusView.as_view(),
          name='project_quotation_status'),
     path('engineering/project/<slug>/fabrication/', views.ProjectFabricationView.as_view(), name='project_fabrication'),
+    path('engineering/project/<slug>/fabrication/<task_slug>/clear/', views.ProjectFabricationClearView.as_view(),
+         name='project_fabrication_clear'),
     path('engineering/project/<slug>/fabrication/status/<fabrication_slug>/<fabrication_action>/',
          views.ProjectFabricationStatusView.as_view(),
          name='project_fabrication_status'),

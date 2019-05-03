@@ -38,7 +38,8 @@ class LogisticView(LoginRequiredMixin, View):
 
         self.context['project'] = project
 
-        return render(request, self.template_name, self.context)
+        #  return render(request, self.template_name, self.context)
+        return redirect(reverse('logistic_bidding', kwargs={'slug': project.slug}))
 
 
 class LogisticsBiddingView(LoginRequiredMixin, View):

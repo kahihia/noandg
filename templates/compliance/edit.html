@@ -95,7 +95,7 @@
                         <div class="modal modal-drawer fade" id="newQuestion" tabindex="-1" role="dialog"
                              aria-labelledby="newQuestionLabel" aria-hidden="true">
                             <!-- .modal-dialog -->
-                            <form action="{% url 'survey_overview' survey.slug %}" method="post"
+                            <form action="{% url 'survey_questions' survey.slug %}" method="post"
                                   class="modal-dialog modal-drawer-right" role="document">
                                 {% csrf_token %}
                                 <!-- .modal-content -->
@@ -179,10 +179,6 @@
                                                 {% endif %}
                                             </td>
                                             <td class="align-middle text-right">
-                                                <a href="" class="btn btn-sm btn-icon btn-secondary"><i
-                                                        class="oi oi-eye"></i>
-                                                    <span class="sr-only">View</span></a>
-
                                                 <a href="{% url 'survey_question_delete' survey.slug survey_question.slug %}"
                                                    class="btn btn-sm btn-icon btn-secondary"><i
                                                         class="far fa-trash-alt"></i> <span

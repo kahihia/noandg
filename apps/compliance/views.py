@@ -66,6 +66,34 @@ class SurveyView(LoginRequiredMixin, View):
             return render(request, self.template_name, self.context)
 
 
+class SurveyQuestionsView(LoginRequiredMixin, View):
+    template_name = 'compliance/edit.html'
+    context = {}
+
+    def get(self, request, **kwargs):
+        survey = get_object_or_404(Survey, slug=kwargs['slug'])
+        self.context['survey'] = survey
+        self.context['question_form'] = SurveyQuestionForm
+
+        return render(request, self.template_name, self.context)
+
+    def post(self, request, **kwargs):
+        survey = get_object_or_404(Survey, slug=kwargs['slug'])
+        survey_question_form = SurveyQuestionForm(request.POST)
+
+        if survey_question_form.is_valid():
+            survey_question = survey_question_form.save(commit=False)
+            survey_question.survey = survey
+            survey_question.save()
+            messages.success(request, 'Survey successfully updated.')
+            return redirect(reverse('survey_overview', kwargs={'slug': survey.slug}))
+
+        else:
+            messages.warning(request, survey_question_form.errors)
+            self.context['form'] = survey_question_form
+            return render(request, self.template_name, self.context)
+
+
 class SurveyDeleteView(LoginRequiredMixin, View):
     context = {}
 

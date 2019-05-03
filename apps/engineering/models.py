@@ -1,5 +1,6 @@
 from django.contrib.auth.models import User
 from django.db import models
+from simple_history.models import HistoricalRecords
 
 from configs import random_code, BID_STATUS, QUOTE_STATUS, DESIGN_TYPE, FABRICATION_STATUS
 
@@ -17,6 +18,15 @@ class Project(models.Model):
     slug = models.SlugField(null=True, db_index=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+    history = HistoricalRecords()
+
+    @property
+    def _history_user(self):
+        return self.changed_by
+
+    @_history_user.setter
+    def _history_user(self, value):
+        self.changed_by = value
 
     class Meta:
         ordering = ['name']

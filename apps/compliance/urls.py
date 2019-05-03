@@ -17,7 +17,9 @@ urlpatterns = [
     path('compliance/directory/', views.SurveysView.as_view(), name='surveys_directory'),
     path('compliance/directory/<slug>/overview/', views.SurveyView.as_view(), name='survey_overview'),
     path('compliance/directory/<slug>/delete/', views.SurveyDeleteView.as_view(), name='survey_delete'),
-    path('compliance/directory/<slug>/delete/<question_slug>/', views.SurveyQuestionDeleteView.as_view(), name='survey_question_delete'),
+    path('compliance/directory/<slug>/questions/', views.SurveyQuestionsView.as_view(), name='survey_questions'),
+    path('compliance/directory/<slug>/delete/<question_slug>/', views.SurveyQuestionDeleteView.as_view(),
+         name='survey_question_delete'),
 
     path('api/v1/compliance/', include(router.urls))
 ]

@@ -1,6 +1,7 @@
 {% extends 'engineering/project.html' %}
 
 {% load static %}
+{% load engineering_extras %}
 
 {% block project_content %}
 
@@ -84,7 +85,7 @@
                             <th> Assigned To</th>
                             <th> Due On</th>
                             <th> Status</th>
-                            <th style="width:100px; min-width:100px;"> &nbsp;</th>
+                            <th style="width:200px; min-width:100px;"> &nbsp;</th>
                         </tr>
                         </thead><!-- /thead -->
                         <!-- tbody -->
@@ -99,16 +100,35 @@
                                         <span class="img-fluid">{{ project_task.title|first|capfirst }}</span>
                                     </a>
                                     <a href="#" data-toggle="modal"
-                                       data-target="#viewSingleDoc{{ project_task.slug }}">{{ project_task.title }}</a>
+                                       data-target="#viewSingleDoc{{ project_task.slug }}">
+                                        {% if project_task.due_date|task_date_check and project_task.fabrication_status == 'Ongoing' %}
+                                            <span class="badge badge-danger"><i class="oi oi-warning"></i> </span>
+                                        {% endif %}{{ project_task.title }}</a>
                                 </td>
                                 <td class="align-middle">{{ project_task.team.first_name }} {{ project_task.team.last_name }}</td>
-                                <td class="align-middle">{{ project_task.due_date }}</td>
+                                <td class="align-middle">
+                                    {{ project_task.due_date }}</td>
                                 <td class="align-middle">
 
                                     <span class="badge badge-{% if project_task.fabrication_status == 'Ongoing' %}info{% elif project_task.fabrication_status == 'Canceled' %}danger{% else %}success{% endif %}">{{ project_task.fabrication_status }}</span>
 
                                 </td>
                                 <td class="align-middle text-right">
+                                    {% if project_task.fabrication_status != 'Accepted' or project_task.fabrication_status == 'Open' %}
+                                        <a href="{% url 'project_fabrication_clear' project.slug project_task.slug %}"
+                                           class="btn btn-sm btn-icon btn-secondary"><i
+                                                class="oi oi-check"></i>
+                                            <span class="sr-only">Mark complete</span></a>
+                                    {% endif %}
+
+
+                                    {% if project_task.fabrication_status != 'Denied' or project_task.fabrication_status == 'Open' %}
+                                        <a href="{% url 'project_fabrication_clear' project.slug project_task.slug %}"
+                                           class="btn btn-sm btn-icon btn-warning"><i
+                                                class="oi oi-x"></i>
+                                            <span class="sr-only">Mark incomplete</span></a>
+                                    {% endif %}
+
                                     <button class="btn btn-sm btn-icon btn-secondary" data-toggle="modal"
                                             data-target="#viewSingleDoc{{ project_task.slug }}"><i
                                             class="oi oi-eye"></i>

@@ -1,7 +1,7 @@
 from django.contrib.auth.models import User
 from django.db import models
 
-from apps.engineering.models import Project
+from apps.engineering.models import Project, ProjectFabrication
 from configs import random_code, SURVEY_TYPE, QUESTION_TYPE
 
 
@@ -48,6 +48,7 @@ class SurveyQuestion(models.Model):
 
 class SurveyQuestionAnswer(models.Model):
     question = models.ForeignKey(SurveyQuestion, on_delete=models.CASCADE)
+    task_given = models.ForeignKey(ProjectFabrication, on_delete=models.CASCADE)
     answer = models.TextField()
     slug = models.SlugField(null=True, db_index=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)

@@ -13,6 +13,7 @@ from rest_framework.permissions import IsAuthenticated, DjangoModelPermissions
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
+from apps.compliance.models import Survey, SurveyQuestion, SurveyQuestionAnswer
 from apps.engineering.forms import ProjectForm, ProjectFileForm, ProjectDesignForm, ProjectEquipmentForm, \
     ProjectFabricationForm
 from apps.engineering.models import Project, ProjectFile, ProjectEquipment, ProjectBudget, ProjectBid, ProjectQuote, \
@@ -23,7 +24,7 @@ from apps.engineering.serializers import CreateProjectSerializer, ProjectSeriali
     ProjectQuoteSerializer, CreateProjectQuoteItemSerializer, ProjectQuoteItemSerializer, ProjectDesignSerializer, \
     CreateProjectDesignSerializer, ProjectFabricationSerializer, CreateProjectFabricationSerializer, \
     ProjectStageSerializer
-from configs import day_min, day_max, daterange, BID_STATUS
+from configs import day_min, day_max, daterange, BID_STATUS, SURVEY_TYPE
 
 
 class ProjectsView(LoginRequiredMixin, View):
@@ -62,6 +63,7 @@ class ProjectView(LoginRequiredMixin, View):
 
         self.context['project'] = project
         self.context['form'] = project_form
+        self.context['history'] = project.history.all()
 
         return render(request, self.template_name, self.context)
 
@@ -441,6 +443,63 @@ class ProjectFabricationView(LoginRequiredMixin, View):
             return render(request, self.template_name, self.context)
 
 
+class ProjectFabricationClearView(LoginRequiredMixin, View):
+    template_name = 'engineering/fabrication/edit.html'
+    context = {}
+
+    def get(self, request, *args, **kwargs):
+        project = get_object_or_404(Project, slug=kwargs['slug'])
+        project_task = get_object_or_404(ProjectFabrication, slug=kwargs['task_slug'])
+        project_fabrication_form = ProjectFabricationForm
+
+        if Survey.objects.filter(project=project, survey_type=SURVEY_TYPE[1][1]).exists():
+            survey = Survey.objects.get(project=project, survey_type=SURVEY_TYPE[1][1])
+            survey_questions = SurveyQuestion.objects.filter(survey=survey)
+        else:
+            survey = None
+            survey_questions = None
+
+        survey_complete = True
+        for survey_question in survey_questions:
+            question_answered = SurveyQuestionAnswer.objects.filter(question=survey_question,
+                                                                    task_given=project_task).exists()
+            if question_answered:
+                pass
+            else:
+                survey_complete = False
+
+        self.context['project'] = project
+        self.context['project_task'] = project_task
+        self.context['form'] = project_fabrication_form
+        self.context['survey'] = survey
+        self.context['survey_questions'] = survey_questions
+        self.context['survey_complete'] = survey_complete
+
+        return render(request, self.template_name, self.context)
+
+    def post(self, request, *args, **kwargs):
+        project = get_object_or_404(Project, slug=kwargs['slug'])
+        project_task = get_object_or_404(ProjectFabrication, slug=kwargs['task_slug'])
+
+        question = request.POST.get('question')
+        answer = request.POST.get('answer')
+
+        if question != "" and answer != "":
+            survey_answer = SurveyQuestionAnswer()
+            survey_answer.task_given = project_task
+            survey_answer.question = get_object_or_404(SurveyQuestion, id=question)
+            survey_answer.answer = answer
+            survey_answer.save()
+
+            messages.success(request, 'Question answered successfully.')
+            return redirect(
+                reverse('project_fabrication_clear', kwargs={'slug': project.slug, 'task_slug': project_task.slug}))
+
+        else:
+            messages.warning(request, 'Check your answer.')
+            return render(request, self.template_name, self.context)
+
+
 class ProjectFabricationStatusView(LoginRequiredMixin, View):
     context = {}
 
@@ -449,10 +508,14 @@ class ProjectFabricationStatusView(LoginRequiredMixin, View):
         fabrication = get_object_or_404(ProjectFabrication, slug=kwargs['fabrication_slug'])
         fabrication_action = kwargs['fabrication_action']
 
-        if fabrication_action == 'accept':
-            pass
-        elif fabrication_action == 'deny':
-            pass
+        if fabrication_action == 'complete':
+            fabrication.fabrication_status = 'Complete'
+            fabrication.save()
+            messages.success(request, 'Task marked as complete successfully.')
+        elif fabrication_action == 'canceled':
+            fabrication.fabrication_status = 'Canceled'
+            fabrication.save()
+            messages.success(request, 'Task marked as canceled successfully.')
         elif fabrication_action == 'delete':
             fabrication.delete()
             messages.success(request, 'Task deleted successfully.')
