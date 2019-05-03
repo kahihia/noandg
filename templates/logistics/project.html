@@ -111,7 +111,7 @@
                 <div class="nav-scroller border-bottom">
                     <!-- .nav -->
                     <div class="nav nav-tabs">
-                        <a class="nav-link {% if '/overview/' in request.path %}active{% endif %}"
+                        <a class="nav-link d-none {% if '/overview/' in request.path %}active{% endif %}"
                            href="{% url 'logistic_overview' project.slug %}">Overview</a>
                         <a class="nav-link {% if '/bidding/' in request.path %}active{% endif %}"
                            href="{% url 'logistic_bidding' project.slug %}">Biding</a>
