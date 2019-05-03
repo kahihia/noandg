@@ -150,3 +150,9 @@ REST_FRAMEWORK = {
 # Site
 
 SITE_ID = 1
+ACCOUNT_ADAPTER = 'apps.general.views.NoNewUsersAccountAdapter'
+ACCOUNT_EMAIL_REQUIRED = False
+ACCOUNT_LOGOUT_ON_GET = True
+ACCOUNT_LOGOUT_REDIRECT_URL = '/'
+LOGIN_REDIRECT_URL = '/'
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'

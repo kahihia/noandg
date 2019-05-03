@@ -1,3 +1,4 @@
+from allauth.account.adapter import DefaultAccountAdapter
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import render
 from django.views.generic import TemplateView
@@ -6,7 +7,6 @@ from rest_framework import pagination
 from rest_framework.authtoken.models import Token
 from rest_framework.authtoken.views import ObtainAuthToken
 from rest_framework.response import Response
-
 
 # Web view
 from apps.general.forms import UserForm
@@ -82,3 +82,15 @@ class APIPagination(pagination.PageNumberPagination):
             'total_pages': self.page.paginator.num_pages,
             'results': data
         })
+
+
+class NoNewUsersAccountAdapter(DefaultAccountAdapter):
+
+    def is_open_for_signup(self, request):
+        """
+        Checks whether or not the site is open for signups.
+        Next to simply returning True/False you can also intervene the
+        regular flow by raising an ImmediateHttpResponse
+        (Comment reproduced from the overridden method.)
+        """
+        return False

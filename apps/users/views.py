@@ -1,8 +1,10 @@
+from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.models import User, Group, Permission
 from django.contrib.contenttypes.models import ContentType
 from django.db.models import Q
-from django.shortcuts import render
+from django.shortcuts import render, redirect
+from django.urls import reverse
 from django.views.generic.base import View
 from rest_framework import viewsets
 from rest_framework.generics import get_object_or_404
@@ -10,6 +12,7 @@ from rest_framework.permissions import IsAuthenticated, DjangoModelPermissions
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
+from apps.users.forms import GroupForm, UserForm
 from apps.users.models import AllowedPermission
 from apps.users.serializers import GroupSerializer, PermissionSerializer, UserSerializer, CreateGroupSerializer, \
     CreateUserSerializer
@@ -20,8 +23,126 @@ class UsersView(LoginRequiredMixin, View):
     context = {}
 
     def get(self, request):
+        form = UserForm
+
+        self.context['form'] = form
         self.context['users'] = User.objects.all()
         return render(request, self.template_name, self.context)
+
+    def post(self, request):
+        form = UserForm(request.POST)
+
+        if form.is_valid():
+            new_user = form.save(commit=False)
+            new_user.set_password(request.POST.get('password'))
+            new_user.save()
+
+            messages.success(request, 'User successfully created.')
+            return redirect(reverse('users_directory'))
+        else:
+            self.context['form'] = form
+            messages.error(request, form.errors)
+            return render(request, self.template_name, self.context)
+
+
+class UserView(LoginRequiredMixin, View):
+    template_name = 'users/edit_users.html'
+    context = {}
+
+    def get(self, request, **kwargs):
+        user = get_object_or_404(User, id=kwargs['id'])
+        form = UserForm(instance=user)
+
+        self.context['form'] = form
+        self.context['user'] = user
+        return render(request, self.template_name, self.context)
+
+    def post(self, request, **kwargs):
+        user = get_object_or_404(User, id=kwargs['id'])
+        form = UserForm(request.POST, instance=user)
+
+        if form.is_valid():
+            new_user = form.save(commit=False)
+            new_user.set_password(request.POST.get('password'))
+            new_user.save()
+            messages.success(request, 'User successfully updated.')
+            return redirect(reverse('user_view', kwargs={'id': user.id}))
+        else:
+            self.context['form'] = form
+            messages.error(request, form.errors)
+            return render(request, self.template_name, self.context)
+
+
+class UserDeleteView(LoginRequiredMixin, View):
+
+    def get(self, request, **kwargs):
+        user = get_object_or_404(User, id=kwargs['id'])
+        user_action = kwargs['user_action']
+        if user_action == 'delete':
+            user.delete()
+            messages.success(request, 'User successfully deleted.')
+        return redirect(reverse('users_directory'))
+
+
+class RolesView(LoginRequiredMixin, View):
+    template_name = 'users/roles.html'
+    context = {}
+
+    def get(self, request):
+        form = GroupForm
+
+        self.context['form'] = form
+        self.context['groups'] = Group.objects.all()
+        return render(request, self.template_name, self.context)
+
+    def post(self, request):
+        form = GroupForm(request.POST)
+
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'User role successfully created.')
+            return redirect(reverse('users_roles'))
+        else:
+            self.context['form'] = form
+            messages.error(request, form.errors)
+            return render(request, self.template_name, self.context)
+
+
+class RoleView(LoginRequiredMixin, View):
+    template_name = 'users/edit_roles.html'
+    context = {}
+
+    def get(self, request, **kwargs):
+        group = get_object_or_404(Group, id=kwargs['id'])
+        form = GroupForm(instance=group)
+
+        self.context['form'] = form
+        self.context['group'] = group
+        return render(request, self.template_name, self.context)
+
+    def post(self, request, **kwargs):
+        group = get_object_or_404(Group, id=kwargs['id'])
+        form = GroupForm(request.POST, instance=group)
+
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'User role successfully updated.')
+            return redirect(reverse('users_role', kwargs={'id': group.id}))
+        else:
+            self.context['form'] = form
+            messages.error(request, form.errors)
+            return render(request, self.template_name, self.context)
+
+
+class RoleDeleteView(LoginRequiredMixin, View):
+
+    def get(self, request, **kwargs):
+        group = get_object_or_404(Group, id=kwargs['id'])
+        group_action = kwargs['group_action']
+        if group_action == 'delete':
+            group.delete()
+            messages.success(request, 'User role successfully deleted.')
+        return redirect(reverse('users_roles'))
 
 
 class UserViewSet(viewsets.ModelViewSet):
