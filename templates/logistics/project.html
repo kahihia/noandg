@@ -25,27 +25,6 @@
             </a> <!-- /btn-account -->
             <!-- right actions -->
             <div class="ml-auto hidden">
-                <!-- invite members -->
-                <div class="dropdown d-inline-block">
-                    <button type="button" class="btn btn-light btn-icon" title="Invite members" data-toggle="dropdown"
-                            data-display="static" aria-haspopup="true" aria-expanded="false"><i
-                            class="fas fa-user-plus"></i></button>
-                    <div class="dropdown-arrow"></div><!-- .dropdown-menu -->
-                    <div class="dropdown-menu dropdown-menu-right dropdown-menu-rich stop-propagation">
-                        <div class="dropdown-header"> Add members</div>
-                        <div class="form-group px-3 py-2 m-0">
-                            <input type="text" class="form-control" placeholder="e.g. @bent10" data-toggle="tribute"
-                                   data-remote="assets/data/tribute.json" data-menu-container="#people-list"
-                                   data-item-template="true" data-autofocus="true">
-                            <small class="form-text text-muted">Search people by username or email address to invite
-                                them.
-                            </small>
-                        </div>
-                        <div id="people-list" class="tribute-inline stop-propagation"></div>
-                        <a href="" class="dropdown-footer">Add member to project</a>
-                    </div><!-- /.dropdown-menu -->
-                </div><!-- /invite members -->
-
             </div><!-- /right actions -->
         </header><!-- /.page-navs -->
 
@@ -62,7 +41,7 @@
                     <!-- grid column -->
                     <div class="col">
                         <h1 class="page-title"> {{ project.name|capfirst }} </h1>
-                        <p>{{ project.description|capfirst|slice:":180" }}...</p>
+                        <p>{{ project.description|capfirst }}</p>
 
                         <!-- Modal Drawer Right -->
                         <div class="modal modal-drawer fade" id="editProject" tabindex="-1" role="dialog"
@@ -117,6 +96,8 @@
                            href="{% url 'logistic_bidding' project.slug %}">Biding</a>
                         <a class="nav-link {% if '/quotation/' in request.path %}active{% endif %}"
                            href="{% url 'logistic_quotation' project.slug %}">Quotation</a>
+                        <a class="nav-link {% if '/warehouse/' in request.path %}active{% endif %}"
+                           href="{% url 'logistic_warehouse' project.slug %}">Warehouse</a>
                     </div><!-- /.nav -->
                 </div><!-- /.nav-scroller -->
             </header><!-- /.page-title-bar -->

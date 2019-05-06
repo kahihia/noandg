@@ -25,7 +25,7 @@ class Warehouse(models.Model):
 
 
 class Stock(models.Model):
-    warehouse = models.ForeignKey(Warehouse, on_delete=models.CASCADE)
+    project = models.ForeignKey(Project, on_delete=models.CASCADE)
     name = models.CharField(max_length=255, unique=True)
     unit_cost = models.FloatField()
     unit_cost_in = models.CharField(max_length=55)
@@ -53,7 +53,6 @@ class Stock(models.Model):
 
 
 class StockRelease(models.Model):
-    warehouse = models.ForeignKey(Warehouse, on_delete=models.CASCADE)
     project = models.ForeignKey(Project, on_delete=models.CASCADE)
     released_by = models.ForeignKey(User, on_delete=models.CASCADE)
     stock = models.ForeignKey(Stock, on_delete=models.CASCADE)
@@ -71,4 +70,4 @@ class StockRelease(models.Model):
         super().save(*args, **kwargs)
 
     def __str__(self):
-        return f'{self.warehouse.name} - {self.stock.name}'
+        return f'{self.project.name} - {self.stock.name}'

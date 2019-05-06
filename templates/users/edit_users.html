@@ -17,13 +17,16 @@
 
                 <!-- title and toolbar -->
                 <div class="d-md-flex align-items-md-start">
-                    <h1 class="page-title mr-sm-auto"> {{ user.name }} </h1><!-- .btn-toolbar -->
+                    <h1 class="page-title mr-sm-auto">User: {{ user.first_name }} {{ user.last_name }} </h1>
+                    <!-- .btn-toolbar -->
                     <div class="btn-toolbar">
-                        <a href="{% url 'user_directory_delete' user.id 'delete' %}" type="button"
-                           class="btn btn-danger">
-                            <i class="oi oi-plus"></i>
-                            <span class="ml-1">Delete</span>
-                        </a>
+                        {% if perms.auth.delete_user %}
+                            <a href="{% url 'user_directory_delete' user.id 'delete' %}" type="button"
+                               class="btn btn-danger">
+                                <i class="oi oi-plus"></i>
+                                <span class="ml-1">Delete</span>
+                            </a>
+                        {% endif %}
                     </div><!-- /.btn-toolbar -->
                 </div><!-- /title and toolbar -->
             </header><!-- /.page-title-bar -->
@@ -40,8 +43,9 @@
                         <div class="row">
                             <div class="col-md-6">
                                 <!-- .modal-dialog -->
-                                <form action="{% url 'user_view' user.id %}" method="post"
-                                      class="" role="document">
+                                <form {% if perms.auth.change_user %}action="{% url 'user_view' user.id %}"
+                                      method="post"
+                                      {% endif %} class="" role="document">
                                     {% csrf_token %}
                                     <!-- .modal-content -->
                                     <div class="">
@@ -86,8 +90,10 @@
                                         </div><!-- /.modal-body -->
                                         <!-- .modal-footer -->
                                         <div class="modal-footer text-left">
-                                            <button type="submit" class="btn btn-primary">Save changes
-                                            </button>
+                                            {% if perms.auth.change_user %}
+                                                <button type="submit" class="btn btn-primary">Save changes
+                                                </button>
+                                            {% endif %}
                                         </div><!-- /.modal-footer -->
                                     </div><!-- /.modal-content -->
                                 </form><!-- /.modal-dialog -->

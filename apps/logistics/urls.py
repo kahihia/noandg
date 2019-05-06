@@ -27,6 +27,7 @@ urlpatterns = [
     path('logistics/logistic/<slug>/quotation/status/<quote_item_slug>/<quote_item_action>/',
          views.LogisticsQuotationItemStatusView.as_view(),
          name='logistic_quotation_status'),
+    path('logistics/logistic/<slug>/warehouse/', views.LogisticsWarehouseView.as_view(), name='logistic_warehouse'),
 
     path('api/v1/logistics/forms/equipments/', views.ProjectEquipmentsViewSet.as_view()),
     path('api/v1/logistics/', include(router.urls)),

@@ -196,6 +196,30 @@ class LogisticsQuotationItemStatusView(LoginRequiredMixin, View):
         return redirect(reverse('logistic_quotation', kwargs={'slug': project.slug}))
 
 
+class LogisticsWarehouseView(LoginRequiredMixin, View):
+    template_name = 'logistics/warehouse/index.html'
+    context = {}
+
+    def get(self, request, *args, **kwargs):
+        project = get_object_or_404(Project, slug=kwargs['slug'])
+        project_bids = LogisticsBid.objects.filter(project=project)
+
+        self.context['project'] = project
+        self.context['project_bids'] = project_bids
+
+        return render(request, self.template_name, self.context)
+
+    def post(self, request, *args, **kwargs):
+        project = get_object_or_404(Project, slug=kwargs['slug'])
+        project_bid = LogisticsBid()
+        project_bid.project = project
+        project_bid.vendor = request.user
+        project_bid.save()
+
+        messages.success(request, 'Bid successfully submitted.')
+        return redirect(reverse('logistic_bidding', kwargs={'slug': project.slug}))
+
+
 class UsersView(LoginRequiredMixin, View):
     template_name = 'users/index.html'
     context = {}

@@ -19,11 +19,13 @@
                 <div class="d-md-flex align-items-md-start">
                     <h1 class="page-title mr-sm-auto"> Roles </h1><!-- .btn-toolbar -->
                     <div class="btn-toolbar">
-                        <button type="button" class="btn btn-secondary" data-toggle="modal"
-                                data-target="#newProject">
-                            <i class="oi oi-plus"></i>
-                            <span class="ml-1">New Role</span>
-                        </button>
+                        {% if perms.auth.add_group %}
+                            <button type="button" class="btn btn-secondary" data-toggle="modal"
+                                    data-target="#newProject">
+                                <i class="oi oi-plus"></i>
+                                <span class="ml-1">New Role</span>
+                            </button>
+                        {% endif %}
 
                         <!-- Modal Drawer Right -->
                         <div class="modal modal-drawer fade" id="newProject" tabindex="-1" role="dialog"
@@ -105,12 +107,18 @@
                                                 <a href="{% url 'users_role' group.id %}">{{ group.name }}</a>
                                             </td>
                                             <td class="align-middle text-right">
-                                                <a href="{% url 'users_role' group.id %}"
-                                                   class="btn btn-sm btn-icon btn-secondary"><i
-                                                        class="fa fa-pencil-alt"></i> <span class="sr-only">Edit</span></a>
-                                                <a href="{% url 'users_role_delete' group.id 'delete' %}" class="btn btn-sm btn-icon btn-secondary"><i
-                                                        class="far fa-trash-alt"></i> <span
-                                                        class="sr-only">Remove</span></a>
+                                                {% if perms.auth.view_group %}
+                                                    <a href="{% url 'users_role' group.id %}"
+                                                       class="btn btn-sm btn-icon btn-secondary"><i
+                                                            class="fa fa-pencil-alt"></i> <span
+                                                            class="sr-only">Edit</span></a>
+                                                {% endif %}
+                                                {% if perms.auth.delete_group %}
+                                                    <a href="{% url 'users_role_delete' group.id 'delete' %}"
+                                                       class="btn btn-sm btn-icon btn-danger"><i
+                                                            class="far fa-trash-alt"></i> <span
+                                                            class="sr-only">Remove</span></a>
+                                                {% endif %}
                                             </td>
                                         </tr><!-- /tr -->
                                     {% endfor %}
