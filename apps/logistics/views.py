@@ -16,6 +16,7 @@ from apps.engineering.serializers import CreateProjectSerializer, ProjectSeriali
 from apps.logistics.models import LogisticsBid, LogisticsQuote, LogisticsQuoteItem
 from apps.logistics.serializers import CreateProjectBidSerializer, ProjectBidSerializer, CreateProjectQuoteSerializer, \
     ProjectQuoteSerializer, ProjectQuoteItemSerializer, CreateProjectQuoteItemSerializer
+from apps.warehouse.models import Stock
 from configs import BID_STATUS
 
 
@@ -202,10 +203,10 @@ class LogisticsWarehouseView(LoginRequiredMixin, View):
 
     def get(self, request, *args, **kwargs):
         project = get_object_or_404(Project, slug=kwargs['slug'])
-        project_bids = LogisticsBid.objects.filter(project=project)
+        project_stock = Stock.objects.filter(project=project)
 
         self.context['project'] = project
-        self.context['project_bids'] = project_bids
+        self.context['project_stocks'] = project_stock
 
         return render(request, self.template_name, self.context)
 

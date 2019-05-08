@@ -3,22 +3,11 @@
   <component name="ChangeListManager">
     <list default="true" id="23101f4f-38e5-4104-886c-fff0ff11caf4" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/general/static/assets/images/brand-inverse.png" beforeDir="false" afterPath="$PROJECT_DIR$/apps/general/static/assets/images/1brand-inverse.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/general/static/assets/stylesheets/custom.css" beforeDir="false" afterPath="$PROJECT_DIR$/apps/general/static/assets/stylesheets/custom.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/general/static/assets/stylesheets/theme.min.css" beforeDir="false" afterPath="$PROJECT_DIR$/apps/general/static/assets/stylesheets/theme.min.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/logistics/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/apps/logistics/urls.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/apps/logistics/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/apps/logistics/views.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/warehouse/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/apps/warehouse/models.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/db.sqlite3" beforeDir="false" afterPath="$PROJECT_DIR$/db.sqlite3" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/base.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/base.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/engineering/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/engineering/index.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/engineering/project.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/engineering/project.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/index.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/logistics/project.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/logistics/project.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/users/edit_roles.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/users/edit_roles.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/users/edit_users.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/users/edit_users.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/users/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/users/index.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/users/roles.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/users/roles.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/logistics/bidding/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/logistics/bidding/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/logistics/quotation/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/logistics/quotation/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/logistics/warehouse/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/logistics/warehouse/index.html" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -44,121 +33,49 @@
     <option name="myCustomStartScript" value="import sys; print('Python %s on %s' % (sys.version, sys.platform))&#10;import django; print('Django %s' % django.get_version())&#10;sys.path.extend([WORKING_DIR_AND_PYTHON_PATHS])&#10;if 'setup' in dir(django): django.setup()&#10;import django_manage_shell; django_manage_shell.run(PROJECT_ROOT)" />
   </component>
   <component name="FileEditorManager">
-    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
+    <leaf>
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/apps/logistics/views.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1275">
-              <caret line="200" column="16" selection-start-line="200" selection-start-column="16" selection-end-line="200" selection-end-column="16" />
+            <state relative-caret-position="180">
+              <caret line="51" column="30" lean-forward="true" selection-start-line="51" selection-start-column="30" selection-end-line="51" selection-end-column="30" />
               <folding>
                 <element signature="e#0#35#0" expanded="true" />
-                <element signature="e#2631#3015#0" />
-                <element signature="e#3078#3975#0" />
-                <element signature="e#4038#5991#0" />
-                <element signature="e#6061#6576#0" />
-                <element signature="e#6649#7649#0" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/apps/logistics/urls.py">
+        <entry file="file://$PROJECT_DIR$/templates/logistics/bidding/index.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="390">
-              <caret line="29" column="113" selection-start-line="29" selection-start-column="113" selection-end-line="29" selection-end-column="113" />
+            <state relative-caret-position="303">
+              <caret line="37" column="7" selection-start-line="37" selection-start-column="7" selection-end-line="37" selection-end-column="7" />
               <folding>
-                <element signature="e#0#37#0" expanded="true" />
+                <element signature="e#1072#1095#0#HTML" expanded="true" />
+                <element signature="n#for#0;n#!!top" />
               </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/templates/logistics/project.html">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="316">
-              <caret line="42" column="77" lean-forward="true" selection-start-line="42" selection-start-column="77" selection-end-line="42" selection-end-column="77" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/templates/logistics/warehouse/index.html">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1470">
-              <caret line="98" column="37" selection-start-line="98" selection-start-column="37" selection-end-line="98" selection-end-column="37" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/templates/index.html">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="101">
-              <caret line="52" column="63" selection-start-line="52" selection-start-column="63" selection-end-line="52" selection-end-column="63" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/apps/general/static/assets/stylesheets/custom.css">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="225">
-              <caret line="15" column="19" lean-forward="true" selection-start-line="15" selection-start-column="19" selection-end-line="15" selection-end-column="19" />
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/apps/general/static/assets/stylesheets/theme.min.css">
+        <entry file="file://$PROJECT_DIR$/templates/logistics/quotation/index.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="31608">
-              <caret column="384600" selection-start-column="384600" selection-end-column="384600" />
-              <folding>
-                <element signature="e#24949#25197#2" expanded="true" />
-                <element signature="e#25991#26269#1" expanded="true" />
-                <element signature="e#26309#26557#1" expanded="true" />
-                <element signature="e#29375#29665#2" expanded="true" />
-                <element signature="e#30489#30767#1" expanded="true" />
-                <element signature="e#30807#31097#1" expanded="true" />
-                <element signature="e#59776#60074#2" expanded="true" />
-                <element signature="e#60301#60510#2" expanded="true" />
-                <element signature="e#60911#61162#2" expanded="true" />
-                <element signature="e#62640#62918#1" expanded="true" />
-                <element signature="e#74441#74688#2" expanded="true" />
-                <element signature="e#75479#75729#2" expanded="true" />
-                <element signature="e#105051#105240#2" expanded="true" />
-                <element signature="e#105286#105476#2" expanded="true" />
-                <element signature="e#183872#184120#2" expanded="true" />
-                <element signature="e#184535#184825#2" expanded="true" />
-                <element signature="e#194105#194403#2" expanded="true" />
-                <element signature="e#194590#194841#2" expanded="true" />
-                <element signature="e#196310#196588#1" expanded="true" />
-                <element signature="e#196973#197251#1" expanded="true" />
-                <element signature="e#197760#198038#1" expanded="true" />
-                <element signature="e#198069#198317#1" expanded="true" />
-                <element signature="e#198505#198783#1" expanded="true" />
-                <element signature="e#198814#199104#1" expanded="true" />
-                <element signature="e#236033#236172#2" expanded="true" />
-                <element signature="e#249101#249442#1" expanded="true" />
-                <element signature="e#259654#260091#2" expanded="true" />
-                <element signature="e#260137#260519#2" expanded="true" />
-                <element signature="e#263111#263409#2" expanded="true" />
-                <element signature="e#263914#264123#2" expanded="true" />
-                <element signature="e#322045#322383#1" expanded="true" />
-                <element signature="e#364037#364406#2" expanded="true" />
-                <element signature="e#364466#365029#2" expanded="true" />
-              </folding>
+            <state relative-caret-position="244">
+              <caret line="75" column="115" selection-start-line="75" selection-start-column="115" selection-end-line="75" selection-end-column="115" />
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/templates/base.html">
+        <entry file="file://$PROJECT_DIR$/apps/logistics/models.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="420">
-              <caret line="34" column="22" selection-start-line="34" selection-start-column="22" selection-end-line="34" selection-end-column="22" />
+            <state relative-caret-position="-90">
+              <caret line="15" lean-forward="true" selection-start-line="15" selection-end-line="15" />
+              <folding>
+                <element signature="e#0#43#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -178,7 +95,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>.ivu-collapse &gt; .ivu-collapse-item &gt; .ivu-collapse-header &gt; i</find>
       <find>selectedStock</find>
       <find>quoteitems</find>
       <find>first_name</find>
@@ -208,9 +124,9 @@
       <find>get_history_type_display</find>
       <find>project_bid</find>
       <find>b76ba3</find>
+      <find>#346cb0</find>
     </findStrings>
     <replaceStrings>
-      <replace>stages</replace>
       <replace>stage</replace>
       <replace>deleteStage</replace>
       <replace>answerQuestion</replace>
@@ -240,6 +156,7 @@
       <replace>survey</replace>
       <replace>project_task</replace>
       <replace>DE350B</replace>
+      <replace>#e8cb90</replace>
     </replaceStrings>
     <dirStrings>
       <dir>$PROJECT_DIR$/frontend</dir>
@@ -264,8 +181,6 @@
         <option value="$PROJECT_DIR$/apps/general/static/assets/javascript/pages/datatables-demo.js" />
         <option value="$PROJECT_DIR$/templates/engineering/quotation/index.html" />
         <option value="$PROJECT_DIR$/apps/engineering/forms.py" />
-        <option value="$PROJECT_DIR$/templates/logistics/bidding/index.html" />
-        <option value="$PROJECT_DIR$/templates/logistics/quotation/index.html" />
         <option value="$PROJECT_DIR$/noandgerp/urls.py" />
         <option value="$PROJECT_DIR$/templates/compliance/index.html" />
         <option value="$PROJECT_DIR$/configs.py" />
@@ -295,13 +210,15 @@
         <option value="$PROJECT_DIR$/templates/users/index.html" />
         <option value="$PROJECT_DIR$/templates/engineering/project.html" />
         <option value="$PROJECT_DIR$/apps/logistics/urls.py" />
-        <option value="$PROJECT_DIR$/apps/logistics/views.py" />
-        <option value="$PROJECT_DIR$/templates/logistics/warehouse/index.html" />
         <option value="$PROJECT_DIR$/templates/logistics/project.html" />
         <option value="$PROJECT_DIR$/templates/index.html" />
         <option value="$PROJECT_DIR$/templates/base.html" />
         <option value="$PROJECT_DIR$/apps/general/static/assets/stylesheets/custom.css" />
         <option value="$PROJECT_DIR$/apps/general/static/assets/stylesheets/theme.min.css" />
+        <option value="$PROJECT_DIR$/apps/logistics/views.py" />
+        <option value="$PROJECT_DIR$/templates/logistics/warehouse/index.html" />
+        <option value="$PROJECT_DIR$/templates/logistics/bidding/index.html" />
+        <option value="$PROJECT_DIR$/templates/logistics/quotation/index.html" />
       </list>
     </option>
   </component>
@@ -319,7 +236,6 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -331,45 +247,6 @@
               <item name="noandg" type="b2602c69:ProjectViewProjectNode" />
               <item name="noandg" type="462c0819:PsiDirectoryNode" />
               <item name="apps" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="noandg" type="b2602c69:ProjectViewProjectNode" />
-              <item name="noandg" type="462c0819:PsiDirectoryNode" />
-              <item name="apps" type="462c0819:PsiDirectoryNode" />
-              <item name="general" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="noandg" type="b2602c69:ProjectViewProjectNode" />
-              <item name="noandg" type="462c0819:PsiDirectoryNode" />
-              <item name="apps" type="462c0819:PsiDirectoryNode" />
-              <item name="general" type="462c0819:PsiDirectoryNode" />
-              <item name="static" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="noandg" type="b2602c69:ProjectViewProjectNode" />
-              <item name="noandg" type="462c0819:PsiDirectoryNode" />
-              <item name="apps" type="462c0819:PsiDirectoryNode" />
-              <item name="general" type="462c0819:PsiDirectoryNode" />
-              <item name="static" type="462c0819:PsiDirectoryNode" />
-              <item name="assets" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="noandg" type="b2602c69:ProjectViewProjectNode" />
-              <item name="noandg" type="462c0819:PsiDirectoryNode" />
-              <item name="apps" type="462c0819:PsiDirectoryNode" />
-              <item name="general" type="462c0819:PsiDirectoryNode" />
-              <item name="static" type="462c0819:PsiDirectoryNode" />
-              <item name="assets" type="462c0819:PsiDirectoryNode" />
-              <item name="images" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="noandg" type="b2602c69:ProjectViewProjectNode" />
-              <item name="noandg" type="462c0819:PsiDirectoryNode" />
-              <item name="apps" type="462c0819:PsiDirectoryNode" />
-              <item name="general" type="462c0819:PsiDirectoryNode" />
-              <item name="static" type="462c0819:PsiDirectoryNode" />
-              <item name="assets" type="462c0819:PsiDirectoryNode" />
-              <item name="stylesheets" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="noandg" type="b2602c69:ProjectViewProjectNode" />
@@ -400,12 +277,20 @@
               <item name="noandg" type="462c0819:PsiDirectoryNode" />
               <item name="templates" type="462c0819:PsiDirectoryNode" />
               <item name="logistics" type="462c0819:PsiDirectoryNode" />
+              <item name="quotation" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="noandg" type="b2602c69:ProjectViewProjectNode" />
+              <item name="noandg" type="462c0819:PsiDirectoryNode" />
+              <item name="templates" type="462c0819:PsiDirectoryNode" />
+              <item name="logistics" type="462c0819:PsiDirectoryNode" />
               <item name="warehouse" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
         </subPane>
       </pane>
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -488,18 +373,21 @@
       <workItem from="1556963934800" duration="8000" />
       <workItem from="1556989369539" duration="158000" />
       <workItem from="1557040563538" duration="3753000" />
-      <workItem from="1557146318456" duration="2623000" />
+      <workItem from="1557146318456" duration="3885000" />
+      <workItem from="1557173106735" duration="812000" />
+      <workItem from="1557221274325" duration="1439000" />
+      <workItem from="1557259522034" duration="1326000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="29070000" />
+    <option name="totallyTimeSpent" value="33909000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="689" y="23" width="1223" height="1030" extended-state="0" />
     <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.18360376" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.19385141" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
@@ -551,13 +439,6 @@
     <option name="version" value="1" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/apps/general/static/assets/javascript/pages/datatables-demo.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="595">
-          <caret line="57" column="2" selection-start-line="57" selection-start-column="2" selection-end-line="57" selection-end-column="2" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/templates/table-basic.html" />
     <entry file="file://$PROJECT_DIR$/templates/engineering/designs/index.html">
       <provider selected="true" editor-type-id="text-editor">
@@ -591,28 +472,6 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/templates/logistics/files/index.html" />
-    <entry file="file://$PROJECT_DIR$/apps/logistics/models.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="420">
-          <caret line="28" column="35" selection-start-line="28" selection-start-column="35" selection-end-line="28" selection-end-column="35" />
-          <folding>
-            <element signature="e#0#43#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/templates/logistics/quotation/index.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="304">
-          <caret line="31" column="73" lean-forward="true" selection-start-line="31" selection-start-column="73" selection-end-line="31" selection-end-column="73" />
-          <folding>
-            <element signature="e#1662#1685#0#HTML" expanded="true" />
-            <element signature="e#1993#2030#0#HTML" expanded="true" />
-            <element signature="e#2032#2038#0#HTML" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/noandgerp/urls.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="225">
@@ -847,17 +706,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/apps/warehouse/models.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="272">
-          <caret line="56" column="58" lean-forward="true" selection-start-line="56" selection-start-column="58" selection-end-line="56" selection-end-column="58" />
-          <folding>
-            <element signature="e#0#43#0" expanded="true" />
-            <element signature="e#187#696#0" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/templates/users/roles.html">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="117">
@@ -910,54 +758,15 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/templates/logistics/bidding/index.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="301">
-          <caret line="94" column="61" selection-end-line="130" selection-end-column="14" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/apps/logistics/views.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1275">
-          <caret line="200" column="16" selection-start-line="200" selection-start-column="16" selection-end-line="200" selection-end-column="16" />
-          <folding>
-            <element signature="e#0#35#0" expanded="true" />
-            <element signature="e#2631#3015#0" />
-            <element signature="e#3078#3975#0" />
-            <element signature="e#4038#5991#0" />
-            <element signature="e#6061#6576#0" />
-            <element signature="e#6649#7649#0" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/apps/logistics/urls.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="390">
-          <caret line="29" column="113" selection-start-line="29" selection-start-column="113" selection-end-line="29" selection-end-column="113" />
-          <folding>
-            <element signature="e#0#37#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/templates/logistics/project.html">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="316">
-          <caret line="42" column="77" lean-forward="true" selection-start-line="42" selection-start-column="77" selection-end-line="42" selection-end-column="77" />
+          <caret line="42" column="77" selection-start-line="42" selection-start-column="77" selection-end-line="42" selection-end-column="77" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/apps/general/static/assets/images/brand-inverse.png">
       <provider selected="true" editor-type-id="images" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/templates/logistics/warehouse/index.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1470">
-          <caret line="98" column="37" selection-start-line="98" selection-start-column="37" selection-end-line="98" selection-end-column="37" />
-        </state>
-      </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/templates/index.html">
       <provider selected="true" editor-type-id="text-editor">
@@ -976,14 +785,14 @@
     <entry file="file://$PROJECT_DIR$/apps/general/static/assets/stylesheets/custom.css">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="225">
-          <caret line="15" column="19" lean-forward="true" selection-start-line="15" selection-start-column="19" selection-end-line="15" selection-end-column="19" />
+          <caret line="15" column="19" selection-start-line="15" selection-start-column="19" selection-end-line="15" selection-end-column="19" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/apps/general/static/assets/stylesheets/theme.min.css">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="31608">
-          <caret column="384600" selection-start-column="384600" selection-end-column="384600" />
+        <state relative-caret-position="255">
+          <caret column="89114" selection-start-column="89114" selection-end-column="89114" />
           <folding>
             <element signature="e#24949#25197#2" expanded="true" />
             <element signature="e#25991#26269#1" expanded="true" />
@@ -1019,6 +828,81 @@
             <element signature="e#364037#364406#2" expanded="true" />
             <element signature="e#364466#365029#2" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/apps/warehouse/urls.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <folding>
+            <element signature="e#0#37#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/apps/logistics/urls.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="390">
+          <caret line="29" column="65" selection-start-line="29" selection-start-column="65" selection-end-line="29" selection-end-column="65" />
+          <folding>
+            <element signature="e#0#37#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/logistics/warehouse/index.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="285">
+          <caret line="19" selection-start-line="19" selection-end-line="19" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/apps/warehouse/models.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="165">
+          <caret line="27" column="57" selection-start-line="27" selection-start-column="57" selection-end-line="27" selection-end-column="57" />
+          <folding>
+            <element signature="e#0#43#0" expanded="true" />
+            <element signature="e#187#696#0" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/apps/logistics/views.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="180">
+          <caret line="51" column="30" lean-forward="true" selection-start-line="51" selection-start-column="30" selection-end-line="51" selection-end-column="30" />
+          <folding>
+            <element signature="e#0#35#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/logistics/bidding/index.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="303">
+          <caret line="37" column="7" selection-start-line="37" selection-start-column="7" selection-end-line="37" selection-end-column="7" />
+          <folding>
+            <element signature="e#1072#1095#0#HTML" expanded="true" />
+            <element signature="n#for#0;n#!!top" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/apps/logistics/models.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-90">
+          <caret line="15" lean-forward="true" selection-start-line="15" selection-end-line="15" />
+          <folding>
+            <element signature="e#0#43#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/logistics/quotation/index.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="244">
+          <caret line="75" column="115" selection-start-line="75" selection-start-column="115" selection-end-line="75" selection-end-column="115" />
         </state>
       </provider>
     </entry>

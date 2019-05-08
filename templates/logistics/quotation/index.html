@@ -50,6 +50,7 @@
                         <thead>
                         <tr>
                             <th style="min-width:200px">Name</th>
+                            <th>Vendor</th>
                             <th>Quantity</th>
                             <th>Length</th>
                             <th>Width</th>
@@ -70,6 +71,9 @@
                                         <span class="img-fluid">{{ project_equipment.equipment.name|first|capfirst }}</span>
                                     </a>
                                     <a>{{ project_equipment.equipment.name }}</a>
+                                </td>
+                                <td class="align-middle">
+                                    {{ project_equipment.vendor.first_name }} {{ project_equipment.vendor.last_name }}
                                 </td>
                                 <td class="align-middle">
                                     {{ project_equipment.equipment.estimated_quantity }}</td>
